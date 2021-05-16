@@ -3,7 +3,7 @@ using namespace std;
 #include <string>
 #include <sstream>
 
-#define STUDENTNUMBER 2
+#define STUDENTNUMBER 6
 
 //------------------함수 선언부------------------
 void menu();	// 메뉴 출력 함수
@@ -161,6 +161,7 @@ public:
 						{
 							index++;
 						}
+						//장학금 지원한 학생 수
 						for (int j = 1; j <= stoi(stringBuffer[0]); j++)
 						{
 							studentList[stoi(stringBuffer[j])-1]->apply = true;
@@ -212,7 +213,28 @@ public:
 			}
 			else if (menuIndex == 3)
 			{
+				float GPA[STUDENTNUMBER];
+				int rank[STUDENTNUMBER];
 
+				// 전체 학생의 평균값을 배열로 받는다.
+				for (int i = 0; i < STUDENTNUMBER; i++) {
+					GPA[i] = studentList[i]->totalGPA;
+					rank[i] = 1;	// 점수를 다른 사람과 비교하기 전에는 모두 1등일 가능성이 있으므로 석차배열을 1로 초기화한다. 
+				}
+
+				for (int i = 0; i < STUDENTNUMBER; i++)
+				{
+					for (int j = 0; j < STUDENTNUMBER; j++)
+						if (GPA[i] < GPA[j] &&	// i번보다 점수가 높은 지원한 사람이 있고 점수가 높은 사람이 지원한 사람이라면
+							studentList[i]->apply && studentList[j]->apply)
+							rank[i]++;	//석차를 증가시킨다.
+				}
+
+				for (int i = 0; i < STUDENTNUMBER; i++)
+				{
+					if (rank[i] <= 2 && studentList[i]->apply)
+						cout << studentList[i]->getStudentInfo();
+				}
 			}
 			else if (menuIndex == 4)
 			{
