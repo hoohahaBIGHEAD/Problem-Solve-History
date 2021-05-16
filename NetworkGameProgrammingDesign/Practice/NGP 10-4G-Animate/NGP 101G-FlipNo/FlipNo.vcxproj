@@ -99,10 +99,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Noflip.cpp" />
+    <ClInclude Include="ddraw.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ddraw.h" />
+    <ClCompile Include="Noflip.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
