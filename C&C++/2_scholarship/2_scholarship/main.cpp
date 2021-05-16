@@ -16,14 +16,16 @@ class Student {
 public:
 	//생성자로 입력
 	string name;
-	float majorCredit;
-	float minorCredit;
+	int majorCredit;
+	int minorCredit;
 	float majorGPA;
 	float minorGPA;
 
 	//연산으로 생성
 	float totalGPA;
-	float tuition;
+	int tuition;
+
+	bool apply = false;
 
 	virtual string getStudentInfo() {
 		return "";
@@ -33,7 +35,7 @@ public:
 		return 0;
 	}
 
-	virtual float getTuition() {
+	virtual int getTuition() {
 		return 0;
 	}
 };
@@ -48,10 +50,10 @@ public:
 			this->name + " " +
 			to_string(this->majorCredit) + " " +
 			to_string(this->minorCredit) + " " +
-			to_string(this->majorGPA) + " " +
-			to_string(this->minorGPA) + " " +
+			to_string(this->majorGPA).substr(0, 4) + " " +
+			to_string(this->minorGPA).substr(0, 4) + " " +
 			this->circle + " " +
-			to_string(this->totalGPA) + " " +
+			to_string(this->totalGPA).substr(0, 4) + " " +
 			to_string(this->tuition) + "만원\n";
 	}
 
@@ -59,11 +61,11 @@ public:
 		return ((this->majorCredit * this->majorGPA) + (this->minorCredit * this->minorGPA)) / (this->majorCredit + this->minorCredit);
 	}
 
-	virtual float getTuition(){
+	virtual int getTuition(){
 		return ((this->majorCredit * 10) + (this->minorCredit) * 6);
 	}
 
-	UndergraduateStudent(string name, float majorCredit, float minorCredit, float majorGPA, float minorGPA, string circle) {
+	UndergraduateStudent(string name, int majorCredit, int minorCredit, float majorGPA, float minorGPA, string circle) {
 		this->name = name;
 		this->majorCredit = majorCredit;
 		this->minorCredit = minorCredit;
@@ -88,11 +90,11 @@ public:
 			this->name + " " +
 			to_string(this->majorCredit) + " " +
 			to_string(this->minorCredit) + " " +
-			to_string(this->majorGPA) + " " +
-			to_string(this->minorGPA) + " " +
+			to_string(this->majorGPA).substr(0,4) + " " +
+			to_string(this->minorGPA).substr(0, 4) + " " +
 			this->lab + " " +
 			this->degreeProgram + " " +
-			to_string(this->totalGPA) + " " +
+			to_string(this->totalGPA).substr(0, 4) + " " +
 			to_string(this->tuition) + "만원\n";
 	}
 
@@ -100,11 +102,11 @@ public:
 		return ((this->majorCredit * this->majorGPA) * 1.1 + (this->minorCredit * this->minorGPA) * 0.9) / (this->majorCredit + this->minorCredit);
 	}
 
-	virtual float getTuition() {
+	virtual int getTuition() {
 		return ((this->majorCredit * 12) + (this->minorCredit) * 4);
 	}
 
-	GraduateStudent(string name, float majorCredit, float minorCredit, float majorGPA, float minorGPA, string lab, string degreeProgram) {
+	GraduateStudent(string name, int majorCredit, int minorCredit, float majorGPA, float minorGPA, string lab, string degreeProgram) {
 		this->name = name;
 		this->majorCredit = majorCredit;
 		this->minorCredit = minorCredit;
@@ -148,49 +150,74 @@ public:
 
 
 			if (menuIndex == 1) {
-				for (int i = 0; i < this->num_of_students; i++)
+				for (int i = 0; i <= this->num_of_students; i++)
 				{
-					cout << " " << i + 1 << ")";
-					
-					getline(cin, temp);//문자열 공백도 입력
-					istringstream stringStream(temp);
-					index = 0;
-					while (getline(stringStream, stringBuffer[index], ' '))
+					if (i == this->num_of_students) {
+						cout << "* 지원 대상 학생들의 수와 각각의 번호를 연속해서 입력하시오: ";
+						getline(cin, temp);//문자열 공백도 입력
+						istringstream stringStream(temp);
+						index = 0;
+						while (getline(stringStream, stringBuffer[index], ' '))
+						{
+							index++;
+						}
+						for (int j = 1; j <= stoi(stringBuffer[0]); j++)
+						{
+							studentList[stoi(stringBuffer[j])-1]->apply = true;
+						}
+						
+					}
+					else
 					{
-						index++;
-					}
-			
-					if (index == 6) {
-						studentList[i] = new UndergraduateStudent(
-							stringBuffer[0],
-							stof(stringBuffer[1]),
-							stof(stringBuffer[2]),
-							stof(stringBuffer[3]),
-							stof(stringBuffer[4]),
-							stringBuffer[5]);
-					}
-					else if (index == 7) {
-						studentList[i] = new GraduateStudent(
-							stringBuffer[0],
-							stof(stringBuffer[1]),
-							stof(stringBuffer[2]),
-							stof(stringBuffer[3]),
-							stof(stringBuffer[4]),
-							stringBuffer[5],
-							stringBuffer[6]);
-					}
+						cout << " " << i + 1 << ")";
 
+						getline(cin, temp);//문자열 공백도 입력
+						istringstream stringStream(temp);
+						index = 0;
+						while (getline(stringStream, stringBuffer[index], ' '))
+						{
+							index++;
+						}
 
-					//this->studentList[i]()
+						if (index == 6) {
+							studentList[i] = new UndergraduateStudent(
+								stringBuffer[0],
+								stoi(stringBuffer[1]),
+								stoi(stringBuffer[2]),
+								stof(stringBuffer[3]),
+								stof(stringBuffer[4]),
+								stringBuffer[5]);
+						}
+						else if (index == 7) {
+							studentList[i] = new GraduateStudent(
+								stringBuffer[0],
+								stoi(stringBuffer[1]),
+								stoi(stringBuffer[2]),
+								stof(stringBuffer[3]),
+								stof(stringBuffer[4]),
+								stringBuffer[5],
+								stringBuffer[6]);
+						}
+					}
 				}
 
 			}
 			else if (menuIndex == 2)
 			{
 				for (int i = 0; i < this->num_of_students; i++) {
+					if(studentList[i]->apply)
 					cout << studentList[i]->getStudentInfo();
 				}
 
+			}
+			else if (menuIndex == 3)
+			{
+
+			}
+			else if (menuIndex == 4)
+			{
+				cout << " - 종료합니다.";
+				break;
 			}
 			menu();
 
@@ -207,9 +234,6 @@ int main() {
 	ScholarshipManagement scholarshipManagement(studentList, STUDENTNUMBER);
 	menu();	// 메뉴 출력 함수
 	scholarshipManagement.run();
-	
-
-
 
 	return 0;
 }
