@@ -1,7 +1,9 @@
 #include <iostream>
 using namespace std;
 #include <string>
+#include <sstream>
 
+#define STUDENTNUMBER 2
 
 //------------------함수 선언부------------------
 void menu();	// 메뉴 출력 함수
@@ -24,15 +26,16 @@ public:
 	float tuition;
 
 	virtual string getStudentInfo() {
+		return "";
 	}
 
 	virtual float getGPA() {
+		return 0;
 	}
 
 	virtual float getTuition() {
+		return 0;
 	}
-
-	
 };
 
 class UndergraduateStudent : public Student{
@@ -41,7 +44,8 @@ private:
 	
 public:
 	virtual string getStudentInfo() {
-		return this->name + " " +
+		return " - " + 
+			this->name + " " +
 			to_string(this->majorCredit) + " " +
 			to_string(this->minorCredit) + " " +
 			to_string(this->majorGPA) + " " +
@@ -80,7 +84,8 @@ private:
 
 public:
 	virtual string getStudentInfo() {
-		return this->name + " " +
+		return " - " +
+			this->name + " " +
 			to_string(this->majorCredit) + " " +
 			to_string(this->minorCredit) + " " +
 			to_string(this->majorGPA) + " " +
@@ -117,52 +122,91 @@ public:
 
 
 class ScholarshipManagement {
+public:
 	Student** studentList;
 	int num_of_students;
 
-	void run() {
-		int menuIndex;	// 메뉴 선택을 위한 인덱스
-		cin >> menuIndex;
-
-		// 입력에 맞게 함수를 부른다.
-		if (menuIndex == 1) {
-			for (int i = 0; i < this->num_of_students; i++)
-			{
-				//this->studentList[i]()
-			}
-
-			/*
-			else if (menuIndex == 2) student_change();
-			else if (menuIndex == 3) student_search();
-			else if (menuIndex == 4) student_delete();
-			else if (menuIndex == 5) student_lookup(student_array, student_count);
-			else if (menuIndex == 0) save_exit();
-			else
-			{
-				cout << "잘못된 값을 입력했습니다.\n\n";
-				// 잘못된 값이 입력될 경우 메뉴 함수를 다시 호출한다.
-				menu();
-			}
-			*/
-		}
-	}
+	
 
 	ScholarshipManagement(Student** student, int num_of_students) {
 		this->studentList = student;
 		this->num_of_students = num_of_students;
 	}
+
+	void run() {
+		while (true)
+		{
+			int menuIndex;	// 메뉴 선택을 위한 인덱스
+			cin >> menuIndex;
+			cin.clear();	//에러비트 막고
+			cin.ignore(INT_MAX, '\n');	//\n 비우기
+			
+			string temp;
+			string stringBuffer[10];
+			int index;
+			// 입력에 맞게 함수를 부른다.
+
+
+			if (menuIndex == 1) {
+				for (int i = 0; i < this->num_of_students; i++)
+				{
+					cout << " " << i + 1 << ")";
+					
+					getline(cin, temp);//문자열 공백도 입력
+					istringstream stringStream(temp);
+					index = 0;
+					while (getline(stringStream, stringBuffer[index], ' '))
+					{
+						index++;
+					}
+			
+					if (index == 6) {
+						studentList[i] = new UndergraduateStudent(
+							stringBuffer[0],
+							stof(stringBuffer[1]),
+							stof(stringBuffer[2]),
+							stof(stringBuffer[3]),
+							stof(stringBuffer[4]),
+							stringBuffer[5]);
+					}
+					else if (index == 7) {
+						studentList[i] = new GraduateStudent(
+							stringBuffer[0],
+							stof(stringBuffer[1]),
+							stof(stringBuffer[2]),
+							stof(stringBuffer[3]),
+							stof(stringBuffer[4]),
+							stringBuffer[5],
+							stringBuffer[6]);
+					}
+
+
+					//this->studentList[i]()
+				}
+
+			}
+			else if (menuIndex == 2)
+			{
+				for (int i = 0; i < this->num_of_students; i++) {
+					cout << studentList[i]->getStudentInfo();
+				}
+
+			}
+			menu();
+
+		}
+		}
+		
 };
 
 //------------------클래스 선언부------------------
 
 int main() {
-	Student** studentList = new Student*[6];
+	Student** studentList = new Student*[STUDENTNUMBER];
 	
+	ScholarshipManagement scholarshipManagement(studentList, STUDENTNUMBER);
 	menu();	// 메뉴 출력 함수
-
-
-	
-	
+	scholarshipManagement.run();
 	
 
 
