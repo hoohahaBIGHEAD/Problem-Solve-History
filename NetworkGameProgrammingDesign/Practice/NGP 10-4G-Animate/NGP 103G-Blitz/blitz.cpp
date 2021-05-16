@@ -8,6 +8,7 @@
 
 LPDIRECTDRAW            lpDD;               // DirectDraw object
 LPDIRECTDRAWSURFACE     lpDDSPrimary;       // DirectDraw primary surface
+// 백버퍼를 3개 만든다. 여기에 bmp 파일을 읽어들인 후 다른 곳에 배치할 것이다.
 LPDIRECTDRAWSURFACE     lpDDSOffOne;        // DirectDraw offscreen surface
 LPDIRECTDRAWSURFACE     lpDDSOffTwo;        // DirectDraw offscreen surface
 LPDIRECTDRAWSURFACE     lpDDSOffThree;      // DirectDraw offscreen surface
@@ -16,6 +17,7 @@ DWORD                   dwGreen;            // Pure green
 DWORD                   dwBlue;             // Pure blue
 
 
+//여기가 핵심이다. 프로젝트 내에는 bmp 파일이 몇 개 있다.
 BOOL LoadImage( LPDIRECTDRAWSURFACE lpDDS, LPSTR szImage )
 {
     HBITMAP         hbm;
@@ -135,6 +137,7 @@ long FAR PASCAL WindowProc( HWND hWnd, UINT message,
     RECT        rcRect;     // For shrinking.
 
 
+    //키 입력 시 진행할 행동을 말해준다.
     switch ( message )
     {
 		case WM_SETCURSOR:
@@ -148,6 +151,7 @@ long FAR PASCAL WindowProc( HWND hWnd, UINT message,
 					PostMessage( hWnd, WM_CLOSE, 0, 0 );
 					break;
 
+                    //F1을 누른다면 파란색으로 채운 후 전체를 clear 시킨다.
                 case VK_F1:
                     OutputDebugString( "Color fill...\n" );
 
@@ -162,14 +166,17 @@ long FAR PASCAL WindowProc( HWND hWnd, UINT message,
                                        DDBLT_WAIT, &ddbltfx );
                     break;
 
+                    //F2를 누른다면 
                 case VK_F2:
                     OutputDebugString( "No color keying...\n" );
 
                     // Blit the background with stretching.
+                    // 3번째 이미지를 blit해준다. Blt 함수의 파라메터의 첫 번째 NULL은 전체화면을 표시해준다. 함수를 익히자.
                     lpDDSPrimary->Blt( NULL, lpDDSOffThree, NULL,
                                        DDBLT_WAIT, NULL );
 
                     // Blit our sprites without color keys.
+                    // 스프라이트 2개를 그려주자.
                     lpDDSPrimary->BltFast( 300, 200, lpDDSOffOne, NULL,
                                            DDBLTFAST_WAIT | 
 										   DDBLTFAST_NOCOLORKEY );
@@ -180,6 +187,7 @@ long FAR PASCAL WindowProc( HWND hWnd, UINT message,
                     break;
 
  
+                    // F4 누르면 호수 그림을 반사시켜서 보여준다.
                 case VK_F4:
                     OutputDebugString( "Mirroring about both axis...\n" );
 
@@ -190,11 +198,14 @@ long FAR PASCAL WindowProc( HWND hWnd, UINT message,
                                      DDBLTFX_MIRRORUPDOWN;
 
                     // Mirror the lake on both axis.
+                    // 호수 그림을 반사시켜서 보여준다.
                     lpDDSPrimary->Blt( NULL, lpDDSOffThree, NULL,
                                        DDBLT_DDFX |DDBLT_WAIT, 
                                        &ddbltfx );
                     break;
 
+                    // F5 누르면 사이즈를 줄여서 3번째 그림을 보여준다.
+                    // Blit의 장점은 사이즈를 줄이고 키울 수 있다.
                 case VK_F5:
                     OutputDebugString( "Shrinking...\n" );
 
@@ -219,6 +230,7 @@ long FAR PASCAL WindowProc( HWND hWnd, UINT message,
     return DefWindowProc( hWnd, message, wParam, lParam );
 }
 
+//초기화하는 곳.
 static BOOL doInit( HINSTANCE hInstance, int nCmdShow )
 {
     HWND                hwnd;
@@ -352,6 +364,7 @@ static BOOL doInit( HINSTANCE hInstance, int nCmdShow )
 	}
 
     // Load our images.
+    // bmp 파일을 불러오는 부분이다.
     if ( !LoadImage( lpDDSOffOne, "redcirq.bmp" ) ) 
 	{
         return Fail( hwnd, "Couldn't load offscreen one.\n" );
@@ -370,6 +383,8 @@ static BOOL doInit( HINSTANCE hInstance, int nCmdShow )
 	return TRUE;
 }
 
+// 시작한다면?
+// doInit 실행하고 키보드나 마우스를 기다린다.
 int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     LPSTR lpCmdLine, int nCmdShow)
 {
