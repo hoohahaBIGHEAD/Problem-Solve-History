@@ -120,13 +120,24 @@ void DoBlitExample (void)
 	{
 		static bool	ShrinkOrGrow = 1;
 
+		//사각형을 줄인 부분
 		rcDest.left = (DWORD)(640/2 - 120/2);
 		rcDest.top = (DWORD)(480/2 - 120/2);
 		rcDest.right = (DWORD)(640/2 +120/2);
 		rcDest.bottom = (DWORD)(480/2 +120/2);
 
+		//Blt 함수를조정해서 rect를 조정해주면 된다.
 		ddrval = lpDDSBack->Blt(&rcDest, lpDDSFace, NULL, NULL, NULL);
 
+
+		//사각형을 키운 부분
+		rcDest.left = (DWORD)(640  - 120 );
+		rcDest.top = (DWORD)(480 - 120 );
+		rcDest.right = (DWORD)(640 + 120 );
+		rcDest.bottom = (DWORD)(480 + 120 );
+
+		//Blt 함수를조정해서 rect를 조정해주면 된다.
+		ddrval = lpDDSBack->Blt(&rcDest, lpDDSFace, NULL, NULL, NULL);
 		return;
 	}
 
@@ -176,6 +187,7 @@ void DoFlip (void)
 }
 
 
+// 키보드를 누르면 값을 받고 UpdateStuff에서 그림을 그린다.
 void UpdateStuff(void)
 {
 	DoBlitExample();
@@ -223,6 +235,7 @@ long FAR PASCAL WindowProc( HWND hWnd, UINT message,
 		dwBlitExamples = FULL_SCREEN;
 		break;
 
+		//아까는 직접 그렸는데 bliting을 안 했다.
 	case VK_F4:
 		dwBlitExamples = SHRINK_N_GROW;
 		break;
@@ -361,6 +374,7 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			DispatchMessage(&msg);
 		}
 		else
+			//UpdateStuff를 부르는 게 차이다.
 			UpdateStuff();
 	}
     return msg.wParam;
