@@ -1,3 +1,10 @@
+/*
+사각형 1개를 만들고 쭉 움직이도록 만든 파일
+위에 프레임이 뜨고 플리핑을 안하니까 찢어지는 모습이 보인다.
+Noflip.cpp에서 flip 함수를 추가한 것이다.
+*/
+
+
 #define NAME "Flip"
 #define TITLE "Page Flipping"
 
@@ -254,6 +261,7 @@ BOOL UpdateFrame( HWND hwnd )
     }
 
     // Finally, perform the flip.
+    // 추가적으로 플립해준다. 프라이머리하고 백버퍼 밖에서 진행된다.
     if ( FAILED( lpDDSPrimary->Flip( NULL, DDFLIP_WAIT ) ) )
 	{
         return Fail( hwnd, "Couldn't perform flip." );
