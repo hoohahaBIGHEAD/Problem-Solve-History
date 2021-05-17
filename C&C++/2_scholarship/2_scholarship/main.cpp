@@ -1,10 +1,4 @@
-#include <iostream>
-using namespace std;
-#include <string>
-#include <sstream>
-
 #include "header.h"
-
 
 int main() {
 	//Student 배열을 생성한다.
@@ -24,14 +18,3 @@ int main() {
 }
 
 
-// 메뉴 출력 함수
-void menu() {
-
-	cout << "\n메뉴\n";
-	cout << "1. 장학금 지원\n";
-	cout << "2. 장학금 지원자 정보\n";
-	cout << "3. 장학생 선정\n";
-	cout << "4. 종료하기\n";
-	cout << "* 연산을 입력하세요: ";
-
-};
