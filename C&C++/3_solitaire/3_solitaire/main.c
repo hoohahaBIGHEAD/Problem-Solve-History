@@ -273,10 +273,18 @@ void shuffle(int* card_key, int card_num) {
 	// 더이상 필요 없는 card_key 에 할당된 메모리를 해제한다.
 	free(card_key);
 
+
+	int line = 4;
+	int card_index = 0;
 	// 카드 트리를 형성한다.
-	for (int i = 0; i < 10; i++)
+	for (int i = 1; i < line; i++)
 	{
-		
+		for (int j = 0; j < i; j++)
+		{
+			card_array[card_index]->llink = card_array[card_index + i];
+			card_array[card_index]->rlink = card_array[card_index + i + 1];
+			card_index++;
+		}
 	}
 
 	// 나머지 카드를 hand_stack 에 push 한다.
