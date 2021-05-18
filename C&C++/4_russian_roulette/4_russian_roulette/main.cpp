@@ -4,8 +4,6 @@
 #include <iostream>
 using namespace std;
 
-
-
 //-----------↓ 노드 구조체 정의 방식 ↓-----------
 
 //노드는 데이터 필드와 링크 필드로 나뉘어 있다.
@@ -22,8 +20,7 @@ typedef struct _node {
 	
 	//자기 자신을 참조하는 구조체이다.
 	//C언어는 구문을 허용한다.
-	node_pointer previous_node;
-	node_pointer next_node;
+	node_pointer next;
 } node;
 
 //-----------↑ 노드 구조체 정의 방식 ↑-----------
@@ -40,8 +37,7 @@ node* node_initialize() {
 	new_node->is_loaded = false;
 
 	// 노드의 포인터를 지정
-	new_node->previous_node = NULL;
-	new_node->next_node = NULL;
+	new_node->next= NULL;
 
 	// 메모리가 할당된 새로운 노드를 node_pointer 형으로 리턴
 	return new_node;
