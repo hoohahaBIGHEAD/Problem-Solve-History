@@ -79,13 +79,6 @@ top에 있는 카드로 삼각형 위의 카드를 제거하기로 선택하면 
 */
 
 
-//MALLOC 정의
-#define MΑLLOC(p, s) \
-	if (!((p) = malloc(s))) { \
-	printf("Insufficient memory"); \
-	exit(EXIT_FAILURE);}
-
-
 // Card tree : doubly linked list (tree node is created by malloc())
 // Hand card : linked hand_stack (top node card is to be played)
 
@@ -99,11 +92,20 @@ typedef struct node_type {
 	node_ptr llink, rlink;
 }card;
 
-
-
 ////////////////노드(카드) 정의////////////////////
+
+
+
 void show_shape_num(node_ptr node);
 void show_board();
+
+
+
+void shuffle(int* card_key, int card_num);
+
+
+
+
 
 
 ////////////////스택 및 스택함수 정의////////////////////
@@ -122,6 +124,14 @@ LinkedListStack* LLS_Stack_Init() {
 	hand_stack->size = 0;
 	return hand_stack;
 }
+
+LinkedListStack* LLS_Stack_Init();
+card* LLS_Node_Init(int num, int shape);
+void LLS_Push(LinkedListStack* list, int num, int shape);
+void LLS_Pop(LinkedListStack* list);
+card* LLS_Top(LinkedListStack* list);
+void LLS_Destroy(LinkedListStack* list);
+
 
 // LLS_Node_Init : 스택에 들어갈 노드(카드)를 초기화
 card* LLS_Node_Init(int num, int shape) {
@@ -338,26 +348,6 @@ cnt	i	j	좌값		우값		우-좌
 			return;
 		}
 
-		/*카드 확인 출력용
-		
-		card* card_temp;
-		int count = 0;
-		card_temp = hand_stack->top;
-		while (card_temp != NULL) {
-			printf("%d번째 스택: ", count);
-			show_shape_num(card_temp);
-			printf("\n");
-			card_temp = card_temp->llink;
-			count++;
-		}
-
-		for (int i = 0; i < card_num; i++)
-		{
-			printf("%d번째 카드: ", i);
-			show_shape_num(card_array[i]);
-			printf("\n");
-		}
-		*/
 	}
 
 	return 0;
@@ -447,9 +437,6 @@ void show_board() {
 	{
 		printf("Wrong input\n");
 	}
-
-	
-	
 
 }
 
