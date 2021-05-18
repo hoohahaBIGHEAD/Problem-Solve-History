@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define LINE 4
+#define NUM_SHAPE 4
+
 /*
 문제 이해
 문제 속 3번째 사진과 2번째 사진의 순서가 바뀐 것 같습니다.
@@ -82,17 +85,9 @@ top에 있는 카드로 삼각형 위의 카드를 제거하기로 선택하면 제 손의 있는 top 카드는
 	printf("Insufficient memory"); \
 	exit(EXIT_FAILURE);}
 
-#define NUM_SHAPE 2
 
 // Card tree : doubly linked list (tree node is created by malloc())
 // Hand card : linked hand_stack (top node card is to be played)
-
-
-
-
-
-
-
 
 ////////////////노드(카드) 정의////////////////////
 
@@ -104,8 +99,11 @@ typedef struct node_type {
 	node_ptr llink, rlink;
 }card;
 
-////////////////노드(카드) 정의////////////////////
 
+
+////////////////노드(카드) 정의////////////////////
+void show_shape_num(node_ptr node);
+void show_board();
 
 
 ////////////////스택 및 스택함수 정의////////////////////
@@ -186,10 +184,14 @@ void LLS_Pop(LinkedListStack* list) {
 		// old_top->llink 의 노드(카드)를 new_top 에 할당한다.
 		// 만약 스택에 1개가 남은 상태라면 NULL이 할당된다.
 		new_top = old_top->llink;
-		// new_top의 상단 포인터에 NULL을 할당한다.
-		new_top->rlink = NULL;
+		//old_top이 마지막이라면 new_top에는 NULL이 할당된다. 이때 new_top->rlink은 에러가 난다.
+		if (new_top != NULL) {
+			// new_top의 상단 포인터에 NULL을 할당한다.
+			new_top->rlink = NULL;
+		}
 		// list->top 에 new_top을 할당한다.
 		list->top = new_top;
+		
 	}
 	//리스트의 사이즈를 1 뺀다. list->size == 0이면 게임 종료
 	list->size--;
@@ -215,6 +217,8 @@ void LLS_Destroy(LinkedListStack* list) {
 ////////////////스택 및 스택함수 정의////////////////////
 
 
+
+
 ////////////////카드 섞는 함수 정의////////////////////
 // 배열을 섞는 함수 
 void shuffle(int* card_key, int card_num) {
@@ -229,9 +233,18 @@ void shuffle(int* card_key, int card_num) {
 		card_key[i] = card_key[random_index]; 
 		card_key[random_index] = temp;
 	}
+} 
 ////////////////카드 섞는 함수 정의////////////////////
 
-} int main(void) {
+
+node_ptr* card_array;
+
+// hand_stack 이라는 리스트를 생성. 손에 쥔 카드 리스트이다.
+LinkedListStack* hand_stack;
+int index_position = 0;
+int remain = 10;
+
+int main(void) {
 
 	//각 카드는 0~(13*NUM_SHAPE-1)까지의 고유키가 할당된다. 중복 없음
 	//이렇게 하면 0~12는 ♠1~♠12, 13~25는 ♥0~12, 26~38는 ♣0~12, 39~51는 ◆0~12가 할당된다.
@@ -242,12 +255,11 @@ void shuffle(int* card_key, int card_num) {
 	//마크에는 1~(NUM_SHAPE*13)의 고유 번호가 붙는다. 이걸 랜덤으로 섞어서 카드를 섞어준다.
 	int card_num = 13 * NUM_SHAPE;
 
-	// hand_stack 이라는 리스트를 생성. 손에 쥔 카드 리스트이다.
-	LinkedListStack* hand_stack;
+	
 	// 함수를 통해 리스트 형태의 스택을 생성
 	hand_stack = LLS_Stack_Init();
 
-	node_ptr *card_array;
+	
 	card_array = (int*)malloc(sizeof(card) * card_num); // 카드의 수만큼 노드(카드) 메모리 할당
 
 	int* card_key;
@@ -274,30 +286,83 @@ void shuffle(int* card_key, int card_num) {
 	free(card_key);
 
 
-	int line = 4;
-	int card_index = 0;
+	int cnt = 0;
 	// 카드 트리를 형성한다.
-	for (int i = 1; i < line; i++)
+	/*
+			cnt		c+i		i
+cnt	i	j	좌값		우값		우-좌
+0	1	0	0		1		1
+1	2	0	1		3		2
+2	2	1	2		4		2
+3	3	0	3		6		3
+4	3	1	4		7		3
+5	3	2	5		8		3
+6	4	0	6		10		4
+7	4	1	7		11		4
+8	4	2	8		12		4
+9	4	3	9		13		4
+	*/
+	for (int i = 1; i < LINE; i++)
 	{
 		for (int j = 0; j < i; j++)
 		{
-			card_array[card_index]->llink = card_array[card_index + i];
-			card_array[card_index]->rlink = card_array[card_index + i + 1];
-			card_index++;
+			card_array[cnt]->llink = card_array[cnt + i];
+			card_array[cnt]->rlink = card_array[cnt + i + 1];
+			cnt++;
 		}
 	}
-
+	
 	// 나머지 카드를 hand_stack 에 push 한다.
 	for (int i = 10; i < card_num; i++)
 	{
 		LLS_Push(hand_stack, card_array[i]->num, card_array[i]->shape);
-		printf("top : %d %d\n\n", LLS_Top(hand_stack)->num, LLS_Top(hand_stack)->shape);
+		//printf("top : %d %d\n\n", LLS_Top(hand_stack)->num, LLS_Top(hand_stack)->shape);
+	}
+	while (1)
+	{
+		//스택이 0일때 쇼보드에서 왜 에러가 나지?
+		show_board();
+		if (index_position == -1)
+		{
+			//순서 잘 해줘야 한다. 뺐는데 남은 게 1개라면 다음은 0이 되니 진 것이다.진 것이다.
+			if (hand_stack->size == 1) {
+				printf("\n You Lose. \n");
+				return;
+			}
+			LLS_Pop(hand_stack); // if no more card to play(empty stack), you lose.
+			
+		}
+		if (remain == 0)
+		{
+			printf("\n You Win. \n");
+			return;
+		}
+
+		/*카드 확인 출력용
+		
+		card* card_temp;
+		int count = 0;
+		card_temp = hand_stack->top;
+		while (card_temp != NULL) {
+			printf("%d번째 스택: ", count);
+			show_shape_num(card_temp);
+			printf("\n");
+			card_temp = card_temp->llink;
+			count++;
+		}
+
+		for (int i = 0; i < card_num; i++)
+		{
+			printf("%d번째 카드: ", i);
+			show_shape_num(card_array[i]);
+			printf("\n");
+		}
+		*/
 	}
 
-	//printarr(card_key, card_num);
 	return 0;
 
-
+	/*
 	// 1개의 노드(카드)를 푸쉬
 	printf("Push a node\n");
 	LLS_Push(hand_stack, 1, 1);
@@ -324,7 +389,7 @@ void shuffle(int* card_key, int card_num) {
 	LLS_Pop(hand_stack);
 	// hand_stack 리스트 top의 데이터를 출력
 	printf("top : %d %d\n\n", LLS_Top(hand_stack)->num, LLS_Top(hand_stack)->shape);
-
+	*/
 	LLS_Destroy(hand_stack);
 
 	//MALLOC(card[i], sizeof(card));
@@ -339,196 +404,133 @@ void shuffle(int* card_key, int card_num) {
 
 }
 
-//
-//
-//#include <stdio.h>
-//#include <stdlib.h>	//EXIT_FAILURE
-////#include <cstddef>	//NULL 이거 쓰면 에러난다.
-//
-////변수명 자체를 출력
-//#define TO_STRING(a) #a
-//
-//
-////MALLOC 정의
-//#define MΑLLOC(p, s) \
-//	if (!((p) = malloc(s))) { \
-//	printf("Insufficient memory"); \
-//	exit(EXIT_FAILURE);}
-//
-////포인터의 값으로부터 노드(카드) 위치 추출 매크로
-//#define CHECK(p) if (p == first) str = "first";\
-//else if (p == second) str = "secon";\
-//else if (p == third) str = "third";\
-//else str = "NULL";\
-//
-////리스트 출력 매크로
-//#define PRINT(p) print = p;\
-//printf("%s", TO_STRING(p));\
-//i = 1;\
-///*첫 노드(카드)의 주소값을 기억하기 위한 포인터*/\
-//temp = print;\
-//printf("\taddr\t\tdata\tlink\n");\
-//if(print){\
-//	/*첫 노드(카드)를 출력한다.*/\
-//	CHECK(print)\
-//	printf("n_%d\t%p(%s)\t", i, print, str);\
-//	printf("%d\t", print->data);\
-//	CHECK(print->link)\
-//	printf("%p(%s)\n", print->link, str);\
-//	i++;\
-//	print = print->link;\
-///* 첫 노드(카드)의 주소와 같아질 때까지 출력. circular이기 때문 */ \
-//for (; print != temp; print = print->link) {\
-//	CHECK(print)\
-//	printf("n_%d\t%p(%s)\t", i, print, str);\
-//	printf("%d\t", print->data);\
-//	CHECK(print->link)\
-//	printf("%p(%s)\n", print->link, str);\
-//	i++;\
-//}}\
-//else printf("\tNULL\n")
-//
-////노드(카드) 1개 출력 매크로
-//#define PRINT1(p) print = p;\
-//printf("%s", TO_STRING(p));\
-//printf("\taddr\t\tdata\tlink\n");\
-//	CHECK(print)\
-//	printf("\t%p(%s)\t", print, str);\
-//	printf("%d\t", print->data);\
-//	CHECK(print->link)\
-//	printf("%p(%s)\n", print->link, str);
-//
-//
-//typedef struct list_node* list_pointer;
-//typedef struct list_node {
-//	int data;
-//	list_pointer link;
-//};
-//
-////노드(카드)용 포인터와 프린트용 포인터 2개(print, temp)
-//list_pointer first, second, third, print, temp;
-////string 출력
-//char* str;
-//
-////for문에서 node의 숫자 출력을 위함
-//int i;
-////리스트의 노드(카드) 갯수에 따른 모든 노드(카드) 각각 출력용
-//int node_count;
-//
-////cinvert 함수
-//list_pointer cinvert(list_pointer lead)
-//{//lead가 가리키고 있는 리스트를 역순으로 만든다.
-//	list_pointer middle, trail;
-//	middle = NULL;
-//	trail = NULL;	//마지막 리턴될 포인터이다.
-//	int count = 1;
-//	while (lead)	//lead가 null이 될 때까지 진행. lead는 처음 노드(카드)를 받고 노드(카드)의 끝인 null을 받게 된다.
-//	{
-//		/*
-//		1. lead는 리스트의 첫 노드(카드)부터 마지막_노드(카드)까지 순차적으로 접근한다.
-//			1.1. 처음 while문의 middle->link = trail;에 의하여 리스트의 시작 노드(카드) first->link = null이 된다.
-//			1.2. 마지막_노드(카드)->link = first이다. 따라서 마지막으로 방문하는 노드(카드)는 first가 된다.(마지막으로 방문하는 노드(카드) != 마지막_노드(카드))
-//		2. trail은 지금까지 생성된 middle을 받는다.
-//		3. middle은 lead, 즉 다음 노드(카드), 연산할 노드(카드)를 받는다.
-//		4. middle->link에 trail을 주어 연산할 노드(카드)의 뒤에 그전까지 생성된 middle을 붙여 역순의 리스트를 만든다.
-//		5. 최종적으로 lead는 null이 되면 while 문이 끝나고, while 문에서 나가기 직전, 1.2.에 의하여 middle은 first 노드(카드)를 가리키게 된다.
-//			5.1. 우리는 마지막_노드(카드)의 주소값을 리턴 받고 싶다.
-//			5.2. first(=middle)->link = 마지막_노드(카드)이다.
-//			5.3. middle->link = trail이다.
-//			5.4. 따라서 trail = 마지막_노드(카드)이다.
-//			5.5. 따라서 trail을 리턴 받으면 마지막_노드(카드)의 주소값을 리턴 받게 된다.
-//		6. 이때, first부터 시작해서 마지막_노드(카드)를 방문하고 다시 first를 방문한다. 따라서 while 문은 n+1번 시행된다.
-//			6.1. lead == NULL일 때 while 문은 실행되지 않는다. 이때, lead = trail = NULL이므로 trail을 리턴해도 동일한 결과를 갖는다.
-//		7. 5.5., 6.1.에 의하여 trail을 리턴한다.
-//		*/
-//		trail = middle;	//trail에 middle을 넣는다. 처음에는 null이 들어간다.
-//		middle = lead;	//middle에 lead를 넣는다. 처음에는 받은 포인터의 주소가 들어간다. 1개일 때와 0개일 때 동일 값 리턴.
-//		lead = lead->link;	//lead의 다음 노드(카드)를 가리킨다. 1.1., 1.2.에 의하여 마지막에 null을 가리키게 되고 이때 while 문을 빠져나간다.
-//		middle->link = trail;	//middle의 link, 즉 뒤에 올 것들에 trail을 넣는다.
-//
-//		printf("----------------------요구사항 3↓----------------------\n");
-//		printf("**************while문 %d번 째 실행**************\n", count);
-//		CHECK(trail);
-//		printf("trail--addr: %p(%s)\n", trail, str);
-//		CHECK(middle);
-//		printf("middle-addr: %p(%s)\n", middle, str);
-//		CHECK(lead);
-//		printf("lead---addr: %p(%s)\n", lead, str);
-//		switch (node_count)
-//		{
-//		case 2:
-//			PRINT1(first);
-//			PRINT1(second);
-//			break;
-//		case 1:
-//			PRINT1(third);
-//			break;
-//		}
-//
-//
-//		printf("----------------------요구사항 3↑----------------------\n");
-//		count++;
-//	}
-//	//7. 5.5., 6.1.에 의하여 trail을 리턴한다.
-//	return trail;
-//}
-//
-//int main() {
-//	//리스트 선언 및 할당
-//	list_pointer L2, L2_cinv, L1, L1_cinv, L0, L0_cinv;
-//	//노드(카드)에 메모리 할당
-//	MΑLLOC(first, sizeof(*first));
-//	MΑLLOC(second, sizeof(*second));
-//	MΑLLOC(third, sizeof(*third));
-//
-//	//값 할당
-//	first->data = 10;
-//	first->link = second;
-//	second->data = 20;
-//	second->link = first;
-//
-//	third->data = 30;
-//	third->link = third;
-//
-//	//포인터 확인용 첫 출력
-//	PRINT1(first);
-//	PRINT1(second);
-//	PRINT1(third);
-//
-//	//L2에 첫 노드(카드) 할당
-//	L2 = first;
-//	//처음 L2를 받아서 출력 시 L2를 다음 노드(카드)의 주소값으로 바꾼다.
-//	//first와 second는 영향을 받지 않는다.
-//	printf("----------------------요구사항 1↓----------------------\n");
-//	node_count = 2;
-//	PRINT(L2);
-//	printf("----------------------요구사항 1↑----------------------\n");
-//
-//	//L2에 first를 cinvert하고 할당
-//	printf("----------------------요구사항 2↓----------------------\n");
-//	L2_cinv = cinvert(L2);
-//	printf("----------------------요구사항 2↑----------------------\n");
-//
-//	printf("----------------------요구사항 4↓----------------------\n");
-//	PRINT(L2_cinv);
-//	printf("----------------------요구사항 4↑----------------------\n");
-//
-//
-//	printf("----------------------요구사항 5↓----------------------\n");
-//	node_count = 1;
-//	//노드(카드) 1개짜리 second를 L1에 할당.
-//	L1 = third;
-//	PRINT(L1);
-//	L1_cinv = cinvert(third);
-//	PRINT(L1_cinv);
-//	printf("----------------------요구사항 5↑----------------------\n");
-//
-//	printf("----------------------요구사항 6↓----------------------\n");
-//	node_count = 0;
-//	L0 = NULL;
-//	PRINT(L0);
-//	L0_cinv = cinvert(L0);
-//	PRINT(L0_cinv);
-//	printf("----------------------요구사항 6↑----------------------\n");
-//	return 0;
-//}
+
+void show_board() {
+	printf("\n      0      \t");
+	printf("      "); show_shape_num(card_array[0]); printf("   \n\n\n");
+	printf("    1   2    \t");
+	printf("    "); show_shape_num(card_array[1]); show_shape_num(card_array[2]); printf("\n\n\n");
+	printf("  3   4   5  \t");
+	printf("  "); show_shape_num(card_array[3]); show_shape_num(card_array[4]); show_shape_num(card_array[5]); printf("\n\n\n");
+	printf("6   7   8   9\t");
+	show_shape_num(card_array[6]); show_shape_num(card_array[7]); show_shape_num(card_array[8]); show_shape_num(card_array[9]); printf(" "); printf("\n\n\n");
+
+	printf("You have (%2d) cards.\n", hand_stack->size);
+	printf("============================================\n");
+
+	//남은 카드 출력부
+	card* card_temp;
+	int count = 0;
+	hand_stack->top->show = 1;
+	card_temp = hand_stack->top;
+	while (hand_stack->size != count && count < 11) {
+		show_shape_num(card_temp);
+		card_temp = card_temp->llink;
+		count++;
+	}
+
+	
+	printf("\n\nEnter a number[0..9] to remove (-1 = new card) : ");
+	scanf_s("%d", &index_position);
+
+	if (card_array[index_position] != NULL) {
+		if (index_position == -1) {
+			return;
+		}
+		else if(0<=index_position && index_position <=9)
+		{
+			if ((hand_stack->top->num - card_array[index_position]->num == 1 ||
+				hand_stack->top->num - card_array[index_position]->num == -1 ||
+				hand_stack->top->num - card_array[index_position]->num == 12 ||
+				hand_stack->top->num - card_array[index_position]->num == -12)
+				&& card_array[index_position]->show == 1
+				) {
+
+				int cnt = 0;
+				for (int i = 1; i < LINE; i++)
+				{
+					for (int j = 0; j < i; j++)
+					{
+						if (index_position == cnt + i) {
+							card_array[cnt]->llink = NULL;
+						}
+						else if (index_position == cnt + i + 1) {
+							card_array[cnt]->rlink = NULL;
+						}
+						cnt++;
+					}
+				}
+				remain--;
+				LLS_Push(hand_stack, card_array[index_position]->num, card_array[index_position]->shape);
+				show_shape_num(card_array[index_position]);
+				printf(" is removed.\n");
+				free(card_array[index_position]);
+				card_array[index_position] = NULL;
+			}
+			else
+			{
+				printf("Wrong input\n");
+			}
+		}
+		else
+		{
+			printf("Wrong input\n");
+		}
+
+	
+	}
+	else
+	{
+		printf("Wrong input\n");
+	}
+
+	
+	
+
+}
+
+
+void show_shape_num(node_ptr node) {
+	if (node != NULL) {
+		if (node->llink == NULL && node->rlink == NULL)
+			node->show = 1;
+
+		
+		if (node->show == 1) {
+			//디버깅용
+		//	if (1) {
+			if (node->shape == 0)
+				printf("♠");
+			else if (node->shape == 1)
+				printf("♥");
+			else if (node->shape == 2)
+				printf("♣");
+			else if (node->shape == 3)
+				printf("◆");
+
+			//인덱스는 0부터 시작하니 출력은 1씩 더함
+			if (node->num == 0)
+				printf("A ");
+			else if (node->num == 9)
+				printf("10");
+			else if (node->num == 10)
+				printf("J ");
+			else if (node->num == 11)
+				printf("Q ");
+			else if (node->num == 12)
+				printf("K ");
+			else {
+				printf("%d ", node->num+1);
+			}
+		}
+		else {
+			printf("■  ");
+		}
+	}
+	else {
+		printf("    ");
+	}
+	
+	
+
+}
