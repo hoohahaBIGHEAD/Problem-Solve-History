@@ -20,6 +20,7 @@ void circle(vector2D center, float radius)
 	float x, y;
 
 	glBegin(GL_POLYGON);
+	// 중심을 기준으로 점을 생성해 점끼리 이어 원을 그린다.
 	for (float f = 0.0; f < 2*M_PI; f += M_PI/36.0)
 	{
 		x = center.x + radius * cos(f);
@@ -34,6 +35,7 @@ void ellipse(vector2D center, float width, float height)
 	float x, y;
 
 	glBegin(GL_POLYGON);
+	//원과 비슷하되 점을 가로세로 비율에 따라 정해준다.
 	for (float f = 0.0; f < 2 * M_PI; f += M_PI / 36.0)
 	{
 		x = center.x + width * cos(f);
