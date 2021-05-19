@@ -2,6 +2,7 @@
 //-----------↑ add_comment_here ↑-----------
 
 #include <iostream>
+#include <time.h>
 using namespace std;
 
 //-----------↓ 노드 구조체 정의 방식 ↓-----------
@@ -98,6 +99,8 @@ void insert_node_front(linked_list_circular* list, bool bullet) {
 	}
 }
 
+
+//-----------↓ 불릿 확인용 ↓-----------
 /* Function to traverse a given Circular linked list and print nodes */
 void print_list(linked_list_circular* list) {
 	node* temp = list->last->next;
@@ -116,9 +119,39 @@ void print_list(linked_list_circular* list) {
 		} while (temp != list->last->next);
 	}
 }
+//-----------↑ 불릿 확인용 ↑-----------
+
+//-----------↓ 메모리 할당 삭제 ↓-----------
+/* Function to traverse a given Circular linked list and print nodes */
+void print_list(linked_list_circular* list) {
+	
+	node* temp;
+	temp = list->last;
+	//다음 노드로 last 이동
+	list->last = list->last->next;
+	list->last->next = NULL;
+	free(list->last);
+
+	// If linked list is not empty
+	if (list->last->next != NULL)
+	{
+		// Keep printing nodes till we reach the first node again
+		do
+		{
+			temp = temp->next;
+		} while (temp != list->last->next);
+	}
+
+}
+//-----------↑ 불릿 확인용 ↑-----------
 
 
+//Conditions: “rotate” means that Revolver’s head moves to the next node by a random number.
+//Conditions: After “rotate” clean the screen using ‘system(“cls”)’.
 void rotate(linked_list_circular* list) {
+
+	//랜덤 시드 초기화
+	srand(time(NULL));
 
 	//0에서 5 사이의 랜덤한 숫자를 생성한다.
 	int random = rand() % 6;
@@ -129,30 +162,44 @@ void rotate(linked_list_circular* list) {
 		list->last = list->last->next;
 	}
 
+	
 }
-
-void shoot(linked_list_circular* list) {
-	//리스트의 첫 노드의 장전 여부를 확인한다.
+//요구사항 4. If receive “shoot” command 
+bool shoot(linked_list_circular* list) {
+	//요구사항 4. then check the bullet, 
+	//Conditions: The “shoot” command checks Revolver’s head and moves the head to the next node.
+	//리스트의 헤드 노드의 장전 여부를 확인한다.
 	bool is_loaded = list->last->next->is_loaded;
-	// 만약 장전되어 있다면 죽었다는 메시지를 보낸다.
+
+	//if exists, then print “You Died…” and program end.
+	// 만약 장전되어 있다면 죽었다는 메시지를 보내고 게임을 종료한다.
+	// 이때 shoot 은 false를 리턴하고 main 의 while 문은 종료된다.
 	if (is_loaded)
 	{
 		printf("You Died...\n");
+		//새 게임이 시작되도록 list를 rotate한다.
+		rotate(list);
+		return false;
 	}
+	//요구사항 5. If not exists, then print “You Survived!” and repeat 3.
 	else
 	{
 		printf("You Survived!\n");
+		//Conditions: moves the head to the next node.
+		// 리스트의 노드를 한 칸 이동한다.
+		list->last = list->last->next;
+		return true;
 	}
 }
 
 //-----------↑ circular linked list ↑-----------
 
 
-
-
 int main() {
 
 	//-----------↓ 노드 인스턴스 선언 ↓-----------
+	/* 노드 예시 설명
+	
 	// 노드 인스턴스를 선언할 때에는 노드를 가리키는 포인터를 선언해준다.
 	// 선언해준 포인터에 노드 만큼 메모리를 할당해준다.
 
@@ -162,26 +209,67 @@ int main() {
 	//printf("sizeof(*A) : %d\tsizeof(node) : %d", sizeof(*A), sizeof(node));
 	
 	A = node_initialize(true);
-	
-	// 리스트를 가리킬 포인터 생성
+
+	*/
+	string command;
+
+
+	//요구사항 1. Create a Revolver, which is circular linked list.
 	linked_list_circular* Revolver;
-	// 리스트 초기화
 	Revolver = linked_list_circular_initialize();
 
+	//요구사항 2. Insert one bullet to Revolver and “rotate”.
+	//Conditions: Revolver is connected to 6 nodes, which are created in Revolver’s constructor.
 	insert_node_front(Revolver, false);
 	insert_node_front(Revolver, false);
 	insert_node_front(Revolver, false);
 	insert_node_front(Revolver, false);
 	insert_node_front(Revolver, false);
 	insert_node_front(Revolver, true);
-	
-	 // 모든 총알 확인
-	print_list(Revolver);
+	rotate(Revolver);
+
+
+	//요구사항 5. repeat 3.
+	//게임을 3번 진행
+	int is_survived = true;
+	for (int i = 0; i < 3; i++)
+	{
+		is_survived = true;
+		// 모든 총알 확인
+		//print_list(Revolver);
+		// printf("게임 %d회차\n", i+1);
+		
+		//요구사항 3. “shoot” / “rotate” command to shoot or rotate.
+		printf("Command list(shoot/rotate)\n");
+		while (is_survived)
+		{
+			cout << "CMD>> ";
+			cin >> command;
+			//* Assume that there is no input of the same word with different case >> string 끼리의 == 연산자는 대소문자가 다르면 다른 결과로 인식한다.
+			if (command == "rotate") {
+				rotate(Revolver);
+				//Conditions: After “rotate” clean the screen using ‘system(“cls”)’.
+				system("cls");
+				printf("Command list(shoot/rotate)\n");
+			}
+			// 요구사항 4. If receive “shoot” command then check the bullet, if exists, then print “You Died…” and program end.
+			else if (command == "shoot")
+			{
+				is_survived = shoot(Revolver);
+			}
+			//* Handle exceptions for possible exceptions >> string 입력에 위 두 커맨드를 제외하면 "Wrong Command!"가 출력되도록 함
+			else
+			{
+				printf("Wrong Command!\n");
+			}
+		}
+		
+	}
 
 	//-----------↑ 노드 인스턴스 선언 ↑-----------
 
+	//* If dynamic allocation is not deallocated, you will have -0.2 point penalty for each task
 	
-
 
 	return 0;
 }
