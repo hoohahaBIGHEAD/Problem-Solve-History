@@ -98,7 +98,56 @@ void insert_node_front(linked_list_circular* list, bool bullet) {
 	}
 }
 
+/* Function to traverse a given Circular linked list and print nodes */
+void print_list(linked_list_circular* list) {
+	node* temp = list->last->next;
+	int count = 1;
+
+	// If linked list is not empty
+	if (list->last->next != NULL)
+	{
+		// Keep printing nodes till we reach the first node again
+		do
+		{
+			printf("%d번째 칸 장전 여부? ", count++);
+			printf(temp->is_loaded ? "true" : "false");
+			printf("\n");
+			temp = temp->next;
+		} while (temp != list->last->next);
+	}
+}
+
+
+void rotate(linked_list_circular* list) {
+
+	//0에서 5 사이의 랜덤한 숫자를 생성한다.
+	int random = rand() % 6;
+
+	for (int i = 0; i < random; i++)
+	{
+		//리스트가 가리키는 노드에서 random 만큼 이동한다.
+		list->last = list->last->next;
+	}
+
+}
+
+void shoot(linked_list_circular* list) {
+	//리스트의 첫 노드의 장전 여부를 확인한다.
+	bool is_loaded = list->last->next->is_loaded;
+	// 만약 장전되어 있다면 죽었다는 메시지를 보낸다.
+	if (is_loaded)
+	{
+		printf("You Died...\n");
+	}
+	else
+	{
+		printf("You Survived!\n");
+	}
+}
+
 //-----------↑ circular linked list ↑-----------
+
+
 
 
 int main() {
@@ -115,20 +164,25 @@ int main() {
 	A = node_initialize(true);
 	
 	// 리스트를 가리킬 포인터 생성
-	linked_list_circular* list;
+	linked_list_circular* Revolver;
 	// 리스트 초기화
-	list = linked_list_circular_initialize();
+	Revolver = linked_list_circular_initialize();
 
-	insert_node_front(list, false);
-	insert_node_front(list, false);
-	insert_node_front(list, false); 
-	insert_node_front(list, true);
-	insert_node_front(list, false); 
-	insert_node_front(list, false);
-
-	 
+	insert_node_front(Revolver, false);
+	insert_node_front(Revolver, false);
+	insert_node_front(Revolver, false);
+	insert_node_front(Revolver, false);
+	insert_node_front(Revolver, false);
+	insert_node_front(Revolver, true);
+	
+	 // 모든 총알 확인
+	print_list(Revolver);
 
 	//-----------↑ 노드 인스턴스 선언 ↑-----------
 
+	
+
+
 	return 0;
 }
+
