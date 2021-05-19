@@ -57,17 +57,19 @@ node* node_initialize(bool bullet) {
 // 첫 번째 노드도 O(1)에 찾을 수 있다.
 // 따라서 리스트에 데이터를 삽입할 때 O(1)이 걸린다.
 
+// 링크드 리스트의 
 typedef struct _linked_list_circular {
-	node* last; // 리스트의 마지막 노드 주소를 가리킬 포인터
+	node_pointer last; // 리스트의 마지막 노드 주소를 가리킬 포인터
 } linked_list_circular;
 
 linked_list_circular* linked_list_circular_initialize() {
 	
-	//linked_list_circular를 가리킬 포인터 생성
+	// linked_list_circular를 가리킬 포인터 생성
 	linked_list_circular* new_list;
-	//메모리 할당
+	// new_list에 메모리 할당
 	new_list = (linked_list_circular*)malloc(sizeof(linked_list_circular));
-	//처음 리스트의 last 포인터를 NULL로 할당
+	// 이 리스트는 처음에는 노드를 가지고 있지 않다.
+	// 리스트의 last 포인터를 NULL로 할당
 	new_list->last = NULL;
 	return new_list;
 }
