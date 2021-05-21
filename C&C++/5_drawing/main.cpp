@@ -166,6 +166,8 @@ circle(vector2D(0.0, -0.5), 0.3);	//원 그리기
 	glutSwapBuffers();
 }
 
+/*
+
 int main(int argc, char** argv)
 {
 	//처음 glutInit으로 변수들을 받아와 초기화한다.
@@ -180,3 +182,4 @@ int main(int argc, char** argv)
 	//얘가 계속 반복된다.
 	glutMainLoop();
 }
+*/
