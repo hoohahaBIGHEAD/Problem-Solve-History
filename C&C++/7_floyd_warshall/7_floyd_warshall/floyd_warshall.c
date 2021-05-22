@@ -114,9 +114,18 @@ int main() {
 		}
 	}
 
-	for (size_t i = 0; i < j; i++)
+	/*for (size_t i = 0; i < j; i++)
 	{
 		printf("%d\t", K_done[i]);
+	}*/
+
+	for (size_t i = 0; i < j; i++)
+	{
+		if (j == 1) printf("%d", K_done[i]);
+		else {
+			printf("%d", K_done[i]);
+			if (i != j - 1) printf(" ");
+		}
 	}
 
 	printf("\n%.2f", (float)K_array_distance_total[K_done[0] - 1] / (float)(N - K));
