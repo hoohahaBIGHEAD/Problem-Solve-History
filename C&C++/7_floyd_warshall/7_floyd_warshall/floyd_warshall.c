@@ -35,7 +35,7 @@ int main() {
 	ptr = strtok_s(NULL, " ", &context);
 	M_roads = atoi(ptr);
 	
-	printf("%d %d\n", N_location, M_roads);
+	//printf("%d %d\n", N_location, M_roads);
 
 
 	fgets(s1, INFINITY, stdin);
@@ -126,7 +126,7 @@ int main() {
 			K_array_distance_total[i] += dimention[N_location - 1][j][i];
 		}
 	}
-	printf("\n");
+	//printf("\n");
 
 	//벌텍스로 된 값들만 빼주기
 	for (int i = 0; i < N_location; i++)
@@ -164,7 +164,7 @@ int main() {
 		}
 	}
 
-	printf("\n최종후보 출력\n");
+	//printf("\n최종후보 출력\n");
 	for (size_t i = 0; i < j; i++)
 	{
 		printf("%d\t", K_done[i]);
