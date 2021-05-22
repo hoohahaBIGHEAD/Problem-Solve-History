@@ -53,12 +53,14 @@ int main() {
 		K_candidates++;
 	}
 	
-	printf("\nK = %d\n", K_candidates);
+	//K_array출력
+	/*printf("\nK = %d\n", K_candidates);
 	for (int i = 0; i < K_candidates; i++)
 	{
 		printf("K_array[%d] = %d\n", i, K_array[i]);
-	}
+	}*/
 
+	//초기화
 	for (int k = 0; k < N_location; k++)
 	{
 		for (int i = 0; i < N_location; i++)
@@ -73,7 +75,7 @@ int main() {
 		}
 	}
 	
-	//초기 선언
+	//초기 입력
 	for (int i = 0; i < M_roads; i++)
 	{
 		fgets(s1, INFINITY, stdin);
@@ -115,8 +117,7 @@ int main() {
 
 
 	//k 대신 N_location-1
-	
-	
+	//K 합치기
 	for (int i = 0; i < N_location; i++)
 	{
 		for (int j = 0; j < N_location; j++)
@@ -127,16 +128,60 @@ int main() {
 	}
 	printf("\n");
 
+	//벌텍스로 된 값들만 빼주기
+	for (int i = 0; i < N_location; i++)
+	{
+		for (int j = 0; j < K_candidates; j++)
+		{
+			K_array_distance_total[i] -= dimention[N_location - 1][K_array[j]-1][i];
+		}
+	}
+	
+	//K_array_distance_total에서 K_array[j]-1 각각의 점들 중에서 제일 큰 값을 골라라. 그리고 그걸 평균 거리를 출력해라. 반올림해서.
+	//2개 이상이면 모두 출력해라.
+	int temp = K_array_distance_total[K_array[0]-1];	//첫 값을 제일 크게 주어라. 아니, 첫값을 K어레이중 하나로 주어라
+	int j = 0;	//최종 후보 수 = j+1개
+	int K_done[100] = { 0, }; //최종 후보 번호들. 인덱스는 -1 해주어야 한다.
+	K_done[0] = K_array[0]; //후보 점들만 넣을 것이다.
+	//캔디데이트까지 확인해라. 맥스라면 K_done[0]에 노드 값을 넣고, 하위 인덱스들을 모두 초기화해줘라 같다면 그 다음 인덱스에 넣어라.
+	for (int i = 0; i < K_candidates; i++)
+	{
+		{
+			if (K_array_distance_total[K_array[i] - 1] < temp) {
+				for (int k = 0; k < 100; k++)
+				{
+					K_done[k] = 0;
+					j = 1;
+				}
+				K_done[0] = K_array[i];
+				temp = K_array_distance_total[i];
+			}
+			else if (K_array_distance_total[K_array[i] - 1] == temp)
+			{
+				//처음 1명이면 j = 1이 된다.
+				K_done[j++] = K_array[i];
+			}
+		}
+	}
+
+	printf("\n최종후보 출력\n");
+	for (size_t i = 0; i < j; i++)
+	{
+		printf("%d\t", K_done[i]);
+	}
+	
+	printf("\n%.2f", (float)K_array_distance_total[K_done[0] - 1] / (float)(N_location-K_candidates));
+
 	//K_array 출력
-	printf("K_array 출력\n");
+	/*printf("K_array 출력\n");
 	for (int i = 0; i < N_location; i++) {
 		printf("%d\t", K_array_distance_total[i]);
 	}
-	printf("\n");
+	printf("\n");*/
 	
 
 	//DP출력
-	printf("DP출력\n");
+	/*printf("DP출력\n");
 	for (int k = 0; k < N_location; k++)
 	{
 		for (int i = 0; i < N_location; i++)
@@ -148,7 +193,7 @@ int main() {
 			printf("\n");
 		}
 		printf("\n\n");
-	}
+	}*/
 
 
 
