@@ -4,6 +4,9 @@
 
 #include "ddutil.h"
 
+#include <stdlib.h> //sleep
+
+
 #define _GetKeyState( vkey ) HIBYTE(GetAsyncKeyState( vkey ))
 #define _GetKeyPush( vkey )  LOBYTE(GetAsyncKeyState( vkey ))
 
@@ -16,6 +19,12 @@ LPDIRECTDRAWSURFACE  SpriteImage;
 LPDIRECTDRAWSURFACE  BackGround;
 
 LPDIRECTDRAWCLIPPER	ClipScreen;
+
+/// <summary>
+/// 
+/// </summary>
+bool    click = false;
+DWORD						dwBlitExamples;
 
 int gFullScreen=0;
 int gWidth, gHeight;
@@ -59,6 +68,10 @@ long FAR PASCAL WindowProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 {
     switch ( message )
     {
+        case    WM_LBUTTONDOWN  :   
+            click = true;
+            break; 
+
         //마우스가 움직이면 해당 마우스 위치를 넘겨주고 블리팅해주라.
         case    WM_MOUSEMOVE    :   MouseX = LOWORD(lParam);
                                     MouseY = HIWORD(lParam);
@@ -199,8 +212,15 @@ void CALLBACK _GameProc(HWND hWnd, UINT message, UINT wParam, DWORD lParam)
     //자른 사각형에서 마우스 위치에 가져다 두라
     BackScreen -> BltFast( MouseX - 50, MouseY - 35, SpriteImage, &SpriteRect, DDBLTFAST_WAIT | DDBLTFAST_SRCCOLORKEY );
 
-// enter animation code here!
-
+// enter animation code here
+    
+    //클릭했다면 Frame 을 1씩 더해라. 만약 5번 다 돌았다면 클릭했음을 취소해서 애니메이션 회전을 멈춰라
+    if (click)
+    {
+        Frame = ++Frame % 5;
+        if (Frame%5 == 0)
+            click = false;
+    }
 
 
 
