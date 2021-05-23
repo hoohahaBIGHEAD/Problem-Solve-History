@@ -1,4 +1,4 @@
-/*#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #define MAXNODENUMBER 6
@@ -18,7 +18,7 @@ typedef struct TreeNode {
 } TreeNode;
 
 // 중위 순회
-inorder(TreeNode* root) {
+void inorder(TreeNode* root) {
 	//널 포인터가 아니라면!
 	if (root) {
 		inorder(root->left);	// 왼쪽서브트리 순회
@@ -36,7 +36,7 @@ int arr_sorted[MAXNODENUMBER];
 int index_odd = 0;
 int index_even = 0;
 
-int inorder_odd(TreeNode* root) {
+void inorder_odd(TreeNode* root) {
 	//널 포인터가 아니라면!
 	if (root) {
 		inorder_odd(root->left);	// 왼쪽서브트리 순회
@@ -44,7 +44,7 @@ int inorder_odd(TreeNode* root) {
 		inorder_odd(root->right);	// 오른쪽서브트리 순회
 	}
 }
-int inorder_even(TreeNode* root) {
+void inorder_even(TreeNode* root) {
 	//널 포인터가 아니라면!
 	if (root) {
 		inorder_even(root->left);	// 왼쪽서브트리 순회
@@ -53,7 +53,7 @@ int inorder_even(TreeNode* root) {
 	}
 }
 
-inorder_test(TreeNode* odd, TreeNode* even) {
+void inorder_test(TreeNode* odd, TreeNode* even) {
 	inorder_odd(odd);
 	inorder_even(even);
 	index_odd = 0;
@@ -158,4 +158,4 @@ int main() {
 	//6. 두 개의 이진탐색트리를 순회하는 함수가 정상적으로 작동 되는지 확인하기 위하여 결과를 출력하도록 한다.
 	inorder_test(tree_odd, tree_even);
 	return 0;
-}*/
+}
