@@ -4,6 +4,19 @@
 
 #include "ddutil.h"
 
+
+//사운드
+#include <dsound.h>
+#include "dsutil.h"
+LPDIRECTSOUND       SoundOBJ = NULL;
+LPDIRECTSOUNDBUFFER SoundDSB = NULL;
+DSBUFFERDESC        DSB_desc;
+HSNDOBJ Sound[10];
+void _Play(int num)
+{
+    SndObjPlay(Sound[num], NULL);
+}
+
 #define _GetKeyState( vkey ) HIBYTE(GetAsyncKeyState( vkey ))
 #define _GetKeyPush( vkey )  LOBYTE(GetAsyncKeyState( vkey ))
 
@@ -20,6 +33,8 @@ LPDIRECTDRAWCLIPPER	ClipScreen;
 int gFullScreen=0;
 int gWidth, gHeight;
 int MouseX, MouseY;
+
+bool click = false;
 
 
 BOOL Fail( HWND hwnd )
@@ -58,6 +73,10 @@ long FAR PASCAL WindowProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 {
     switch ( message )
     {
+        case    WM_LBUTTONDOWN  :
+            click = true;
+            _Play(2);
+        break;
         case    WM_MOUSEMOVE    :   MouseX = LOWORD(lParam);
                                     MouseY = HIWORD(lParam);
                                     break;
@@ -188,7 +207,13 @@ void CALLBACK _GameProc(HWND hWnd, UINT message, UINT wParam, DWORD lParam)
 
 // enter animation code here!
 
-
+        //클릭했다면 Frame 을 1씩 더해라. 만약 5번 다 돌았다면 클릭했음을 취소해서 애니메이션 회전을 멈춰라
+    if (click)
+    {
+        Frame = ++Frame % 5;
+        if (Frame % 5 == 0)
+            click = false;
+    }
 
 
 
@@ -203,9 +228,32 @@ void CALLBACK _GameProc(HWND hWnd, UINT message, UINT wParam, DWORD lParam)
 
 }
 
+    //사운드
+BOOL _InitDirectSound(void)
+{
+    if (DirectSoundCreate(NULL, &SoundOBJ, NULL) == DS_OK)
+    {
+        if (SoundOBJ->SetCooperativeLevel(MainHwnd, DSSCL_PRIORITY) != DS_OK) return FALSE;
+
+        memset(&DSB_desc, 0, sizeof(DSBUFFERDESC));
+        DSB_desc.dwSize = sizeof(DSBUFFERDESC);
+        DSB_desc.dwFlags = DSBCAPS_PRIMARYBUFFER;
+
+        if (SoundOBJ->CreateSoundBuffer(&DSB_desc, &SoundDSB, NULL) != DS_OK) return FALSE;
+        SoundDSB->SetVolume(0);
+        SoundDSB->SetPan(0);
+        return TRUE;
+    }
+    return FALSE;
+}
+
+
+
 int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow )
 {
     MSG msg;
+
+    
 
     if ( !_GameMode(hInstance, nCmdShow, 640, 480, 32) ) return FALSE;
 
@@ -216,6 +264,20 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
 	SetTimer(MainHwnd, 1, 5, _GameProc);
 
+    //사운드
+    //WNDCLASS wc;
+    if (_InitDirectSound())
+    {
+        Sound[0] = SndObjCreate(SoundOBJ, "MUSIC.WAV", 1);
+        Sound[1] = SndObjCreate(SoundOBJ, "LAND.WAV", 2);
+        Sound[2] = SndObjCreate(SoundOBJ, "GUN1.WAV", 2);
+        Sound[3] = SndObjCreate(SoundOBJ, "KNIFE1.WAV", 2);
+        Sound[4] = SndObjCreate(SoundOBJ, "DAMAGE1.WAV", 2);
+        Sound[5] = SndObjCreate(SoundOBJ, "DAMAGE2.WAV", 2);
+        SndObjPlay(Sound[0], DSBPLAY_LOOPING);
+    }
+    //사운드
+
     while ( !_GetKeyState(VK_ESCAPE) )
     {
         if ( PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE) )
@@ -224,6 +286,15 @@ int PASCAL WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
             TranslateMessage( &msg );
             DispatchMessage( &msg );
+        }
+        //사운드
+        else
+        {
+            if (_GetKeyPush('1')) _Play(1);
+            if (_GetKeyPush('2')) _Play(2);
+            if (_GetKeyPush('3')) _Play(3);
+            if (_GetKeyPush('4')) _Play(4);
+            if (_GetKeyPush('5')) _Play(5);
         }
     }
     DestroyWindow( MainHwnd );
