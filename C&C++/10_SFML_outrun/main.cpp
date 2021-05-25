@@ -185,7 +185,7 @@ rectWidth	Width of the rectangle
 rectHeight	Height of the rectangle
     */
     //411은 bg.png의 세로 길이입니다.
-    sBackground.setTextureRect(IntRect(0,0,2500,411));
+    sBackground.setTextureRect(IntRect(0,0,5000,411));
     /*
     void sf::Transformable::setPosition	( float x, float y )		
 [물체의 위치 설정]
