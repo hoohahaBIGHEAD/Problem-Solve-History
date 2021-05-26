@@ -3,8 +3,12 @@
 #include <iomanip>
 #include <string>
 #include "functions.cpp"
+#include "menuItemTypeModified.cpp"
 using namespace std;
 const int NO_OF_ITEMS = 8;
+
+int menuItemTypeModified::numbersOfItemInArray = 0;
+
 int main()
 {
     menuItemType menuList[NO_OF_ITEMS];
@@ -30,9 +34,22 @@ int main()
     makeSelection(menuList, NO_OF_ITEMS, choiceList, choiceListLength);
     printCheck(menuList, NO_OF_ITEMS, choiceList, choiceListLength);
 
-    // call getData
-    // call showMenu
-    // call makeSelection
-    // call printCheck
+    ifstream inFileNew;
+    inFileNew.open("breakfasts.txt");
+    if (!inFileNew)
+    {
+        cout << "Cannot open the input file. Program Terminates!"
+            << endl;
+        return 1;
+    }
+
+
+    menuItemTypeModified *menuItemModified;
+    menuItemModified = menuItemTypeModified::menuItemType_initialize("head", 0.0);
+    menuItemModified->getDataInClass(inFileNew);
+    menuItemModified->showMenu();
+    menuItemModified->makeSelection();
+    menuItemModified->printCheck();
+
     return 0;
 }
