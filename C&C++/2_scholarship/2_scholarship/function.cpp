@@ -109,7 +109,7 @@ ScholarshipManagement::ScholarshipManagement(Student** student, int num_of_stude
 	this->studentList = student;
 	this->num_of_students = num_of_students;
 }
-
+/*derived class pointer*/
 void ScholarshipManagement::run() {
 		while (true)
 		{
@@ -149,6 +149,7 @@ void ScholarshipManagement::run() {
 						while (getline(stringStream, token[tokenIndex], ' '))
 							tokenIndex++;
 
+						/*derived class pointer*/
 						//토큰 수가 6개라면 == 받은 변수가 6개라면 == UndergraduateStudent라면
 						if (tokenIndex == 6) {
 							//studentList[i]에 UndergraduateStudent를 저장한다.
@@ -160,6 +161,7 @@ void ScholarshipManagement::run() {
 								stof(token[4]),
 								token[5]);
 						}
+						/*derived class pointer*/
 						//토큰 수가 7개라면 == 받은 변수가 7개라면 == GraduateStudent라면
 						else if (tokenIndex == 7) {
 							//studentList[i]에 GraduateStudent를 저장한다.
