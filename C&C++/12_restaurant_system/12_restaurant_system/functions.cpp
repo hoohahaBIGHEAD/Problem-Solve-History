@@ -122,9 +122,7 @@ inline void makeSelection(menuItemType mList[], int listSize, int choiceList[], 
         }
         else
         {
-            //입력 값이 다른 문자열이라면 에러를 반환하라
-            try
-            {
+        
                 ChooseMenu = stoi(ChooseMenuString);
                 //메뉴를 제대로 선택하지 않았다면
                 if (!(ChooseMenu > 0 && ChooseMenu <= listSize))
@@ -138,9 +136,7 @@ inline void makeSelection(menuItemType mList[], int listSize, int choiceList[], 
                         //얼마나 주문할지 입력한다.
                         cout << "Enter how many Orders: ";
                         cin >> orderNumString;
-                        //제대로 된 정수를 입력하지 않았다면 에러를 반환해라
-                        try
-                        {
+                        
                             orderNum = stoi(orderNumString);
                             //0 이상의 제대로 된 정수가 아니라면
                             if (!(orderNum > 0))
@@ -163,18 +159,10 @@ inline void makeSelection(menuItemType mList[], int listSize, int choiceList[], 
                                     correctOrderDone = true;
                                 }
                             }
-                        }
-                        catch (const std::exception&)
-                        {
-                            cout << "Wrong input. choose correctly" << endl;
-                        }
+                        
                     }
                 }
-            }
-            catch (const std::exception&)
-            {
-                cout << "Wrong input. choose correctly" << endl;
-            }
+         
         }
         
     }
