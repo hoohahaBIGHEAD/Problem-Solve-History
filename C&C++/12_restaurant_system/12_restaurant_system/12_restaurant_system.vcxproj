@@ -22,6 +22,7 @@
     <ClCompile Include="functions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menuItemTypeModified.cpp" />
+    <ClCompile Include="menuItemTypeNew.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

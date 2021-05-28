@@ -4,6 +4,8 @@
 #include <string>
 #include "functions.cpp"
 #include "menuItemTypeModified.cpp"
+#include "menuItemTypeNew.cpp"
+
 using namespace std;
 const int NO_OF_ITEMS = 8;
 
@@ -34,6 +36,13 @@ int main()
     makeSelection(menuList, NO_OF_ITEMS, choiceList, choiceListLength);
     printCheck(menuList, NO_OF_ITEMS, choiceList, choiceListLength);
 
+
+
+
+    
+    menuItemTypeNew menuListNew[NO_OF_ITEMS];
+    int choiceListNew[NO_OF_ITEMS];
+    int choiceListLengthNew;
     ifstream inFileNew;
     inFileNew.open("breakfasts.txt");
     if (!inFileNew)
@@ -42,14 +51,17 @@ int main()
             << endl;
         return 1;
     }
+    for (int i = 0; i < NO_OF_ITEMS; i++)
+    {
+        choiceListNew[i] = 0;
+    }
 
-
-    menuItemTypeModified *menuItemModified;
-    menuItemModified = menuItemTypeModified::menuItemType_initialize("head", 0.0);
-    menuItemModified->getDataInClass(inFileNew);
-    menuItemModified->showMenu();
-    menuItemModified->makeSelection();
-    menuItemModified->printCheck();
+    
+    
+    (*menuListNew).getDataNew(inFileNew, menuListNew, NO_OF_ITEMS);
+    (*menuListNew).showMenuNew(menuListNew, NO_OF_ITEMS);
+    (*menuListNew).makeSelectionNew(menuListNew, NO_OF_ITEMS, choiceListNew, choiceListLengthNew);
+    (*menuListNew).printCheckNew(menuListNew, NO_OF_ITEMS, choiceListNew, choiceListLengthNew);
 
     return 0;
 }

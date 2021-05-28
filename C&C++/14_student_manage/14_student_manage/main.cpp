@@ -520,6 +520,7 @@ int main() {
 		}
 	}
 
+	//메뉴를 출력한다.
 	int menuIndex = 0;
 	while (true)
 	{
