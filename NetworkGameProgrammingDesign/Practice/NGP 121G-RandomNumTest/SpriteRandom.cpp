@@ -27,6 +27,9 @@ int gFullScreen=0, Click=0;
 int gWidth=640*2, gHeight=480;
 int MouseX=100, MouseY=gHeight/2;
 
+//캐릭터의 기본 시작 위치를 정한다
+int PosX = 100, PosY = gHeight / 2;
+
 ////////////////////
 
 LPDIRECTSOUND       SoundOBJ = NULL;
@@ -119,19 +122,27 @@ long FAR PASCAL WindowProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
                     PostMessage(hWnd, WM_CLOSE, 0, 0);
                     return 0;            
 
-				case VK_LEFT: 
+				case VK_LEFT:
+                    PosX = PosX - 5;
 					return 0;
 
                 case VK_RIGHT: 
+                    PosX = PosX + 5;
 					return 0;
 
                 case VK_UP:
+                    PosY = PosY - 5; //윈도우에서 Y 좌표 보정
 					return 0;
 
                 case VK_DOWN: 
-					return 0;
+                    PosY = PosY + 5; //윈도우에서 Y 좌표 보정
+                    return 0;
 
 				case VK_SPACE:
+                    //공격해라
+                    Click = 1;
+                    //사운드 출력
+                    _Play(3);
 					break;
 			}
             break;
@@ -267,6 +278,7 @@ void CALLBACK _GameProc(HWND hWnd, UINT message, UINT wParam, DWORD lParam)
     BackScreen -> BltFast(0, 0, BackGround, &BackRect, DDBLTFAST_WAIT | DDBLTFAST_NOCOLORKEY); 
     BackScreen -> BltFast(640, 0, BackGround, &BackRect, DDBLTFAST_WAIT | DDBLTFAST_NOCOLORKEY); 
 
+    //전역으로 선언했다. 다시 실행되더라도 기존의 값을 가져온다.
     static int Frame = 0;
 
     SpriteRect.left     =   Frame * 100;
@@ -275,6 +287,7 @@ void CALLBACK _GameProc(HWND hWnd, UINT message, UINT wParam, DWORD lParam)
     SpriteRect.bottom   =   70;
 
 	if(Click){
+        //프레임을 1 더해라. 그게 4보다 크면 다시 0으로 바꿔라
 		if ( ++Frame >= 4 ){
 			Frame = 0;
 			Click = 0;
@@ -286,7 +299,10 @@ void CALLBACK _GameProc(HWND hWnd, UINT message, UINT wParam, DWORD lParam)
 	if(MouseY<=35) MouseY=35;
 	if(MouseY>gHeight-35) MouseY=gHeight-35;
 
-    BackScreen -> BltFast( MouseX - 50, MouseY - 35, SpriteImage, &SpriteRect, DDBLTFAST_WAIT | DDBLTFAST_SRCCOLORKEY );
+    //마우스 좌표를 기준으로 캐릭터 위치 이동
+    //BackScreen -> BltFast( MouseX - 50, MouseY - 35, SpriteImage, &SpriteRect, DDBLTFAST_WAIT | DDBLTFAST_SRCCOLORKEY );
+    //키보드로 캐릭터 위치 이동
+    BackScreen->BltFast(PosX, PosY, SpriteImage, &SpriteRect, DDBLTFAST_WAIT | DDBLTFAST_SRCCOLORKEY);
 
 
 
@@ -297,23 +313,31 @@ void CALLBACK _GameProc(HWND hWnd, UINT message, UINT wParam, DWORD lParam)
 	// stone            (380, 375)            (405, 395)
 	// flare            (360, 425)            (390, 455)
 
+    //돌의 이미지 참조
 	SpriteRect.left = 360; 
 	SpriteRect.top = 425; 
 	SpriteRect.right = 390; 
 	SpriteRect.bottom = 455; 
-
+    
+    //------------여기부터
+    //창의 좌표 참조 및 크기 설정. 위의 스프라이트를 해당 크기로 바꿔서 출력해준다.
 	dstRect.left = 400; 
     dstRect.top = 300;
 	dstRect.right = dstRect.left+30; 
     dstRect.bottom = dstRect.top+30;
 
+    //해당 창의 좌표에 스프라이트 이미지를 올려라
 	BackScreen->Blt(&dstRect, Gunship, &SpriteRect, DDBLT_WAIT | DDBLT_KEYSRC, NULL);
+    //------------여기까지 for문을 돌려 돌을 20개 만들어라
+    //만약 돌의 위치가 캐릭터 위치와 비슷하다면 폭발시켜라
 
+    //화염의 이미지 참조
 	SpriteRect.left = 380; 
 	SpriteRect.top = 375; 
 	SpriteRect.right = 405; 
 	SpriteRect.bottom = 395; 
 
+    //화염의 좌표 참조
 	dstRect.left = 500; 
     dstRect.top = 300;
 	dstRect.right = dstRect.left+30; 
