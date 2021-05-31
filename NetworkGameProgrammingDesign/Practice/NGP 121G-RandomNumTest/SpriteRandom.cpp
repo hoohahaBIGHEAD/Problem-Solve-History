@@ -273,13 +273,17 @@ void CALLBACK _GameProc(HWND hWnd, UINT message, UINT wParam, DWORD lParam)
     RECT BackRect = { 0, 0, 640, 480 };
 	RECT DispRect = { 0, 0, gWidth, gHeight };
 	RECT SpriteRect, dstRect, WinRect;
-
+    
+    //랜덤오브젝트 생성
+    static RECT dstRectNew[20];
 
     BackScreen -> BltFast(0, 0, BackGround, &BackRect, DDBLTFAST_WAIT | DDBLTFAST_NOCOLORKEY); 
     BackScreen -> BltFast(640, 0, BackGround, &BackRect, DDBLTFAST_WAIT | DDBLTFAST_NOCOLORKEY); 
 
     //전역으로 선언했다. 다시 실행되더라도 기존의 값을 가져온다.
     static int Frame = 0;
+
+    RECT SpriteRectBefore, SpriteRectAfter;
 
     SpriteRect.left     =   Frame * 100;
     SpriteRect.top      =   0;
@@ -301,6 +305,7 @@ void CALLBACK _GameProc(HWND hWnd, UINT message, UINT wParam, DWORD lParam)
 
     //마우스 좌표를 기준으로 캐릭터 위치 이동
     //BackScreen -> BltFast( MouseX - 50, MouseY - 35, SpriteImage, &SpriteRect, DDBLTFAST_WAIT | DDBLTFAST_SRCCOLORKEY );
+    //100과 70짜리니까 50, 35이다.
     //키보드로 캐릭터 위치 이동
     BackScreen->BltFast(PosX, PosY, SpriteImage, &SpriteRect, DDBLTFAST_WAIT | DDBLTFAST_SRCCOLORKEY);
 
@@ -313,7 +318,20 @@ void CALLBACK _GameProc(HWND hWnd, UINT message, UINT wParam, DWORD lParam)
 	// stone            (380, 375)            (405, 395)
 	// flare            (360, 425)            (390, 455)
 
+
     //돌의 이미지 참조
+    SpriteRectBefore.left = 380;
+    SpriteRectBefore.top = 375;
+    SpriteRectBefore.right = 405;
+    SpriteRectBefore.bottom = 395;
+    //화염의 이미지 참조
+    SpriteRectAfter.left = 360;
+    SpriteRectAfter.top = 425;
+    SpriteRectAfter.right = 390;
+    SpriteRectAfter.bottom = 455;
+
+
+    //화염의 이미지 참조
 	SpriteRect.left = 360; 
 	SpriteRect.top = 425; 
 	SpriteRect.right = 390; 
@@ -327,23 +345,69 @@ void CALLBACK _GameProc(HWND hWnd, UINT message, UINT wParam, DWORD lParam)
     dstRect.bottom = dstRect.top+30;
 
     //해당 창의 좌표에 스프라이트 이미지를 올려라
-	BackScreen->Blt(&dstRect, Gunship, &SpriteRect, DDBLT_WAIT | DDBLT_KEYSRC, NULL);
+	//BackScreen->Blt(&dstRect, Gunship, &SpriteRect, DDBLT_WAIT | DDBLT_KEYSRC, NULL);
     //------------여기까지 for문을 돌려 돌을 20개 만들어라
     //만약 돌의 위치가 캐릭터 위치와 비슷하다면 폭발시켜라
 
-    //화염의 이미지 참조
+    //돌의 이미지 참조
 	SpriteRect.left = 380; 
 	SpriteRect.top = 375; 
 	SpriteRect.right = 405; 
 	SpriteRect.bottom = 395; 
 
-    //화염의 좌표 참조
+
+    static BOOLEAN isMade[20] = { false };
+    static BOOLEAN isCollapsed[20] = { false };
+    static int isCollapsedInt[20] = { 0 };
+    //gWidth*2 gHeight
+    srand(0);
+    for (size_t i = 0; i < 20; i++)
+    {
+        //오브젝트 위치 초기화
+        if (!isMade[i])
+        {
+            dstRectNew[i].left = rand() % (gWidth);
+            dstRectNew[i].top = rand() % gHeight;
+            dstRectNew[i].right = dstRectNew[i].left + 30;
+            dstRectNew[i].bottom = dstRectNew[i].top + 30;
+            isMade[i] = true;
+        }
+        else
+        {
+            if (dstRectNew[i].left == 0)
+            {
+                dstRectNew[i].left += gWidth;
+                dstRectNew[i].right += gWidth;
+            }
+            dstRectNew[i].left-- % (gWidth);
+            dstRectNew[i].right-- % (gWidth);
+        }
+
+        if ((dstRectNew[i].left + 5 - 50< PosX && PosX < dstRectNew[i].right + 5 - 50) &&
+            (dstRectNew[i].top - 5 - 70< PosY && PosY < dstRectNew[i].bottom + 5 - 35))
+        {
+            isCollapsed[i] = true;
+        }
+
+        //충돌하지 않았을 때 보여주기
+        if (!isCollapsed[i])
+            BackScreen->Blt(&dstRectNew[i], Gunship, &SpriteRectBefore, DDBLT_WAIT | DDBLT_KEYSRC, NULL);
+        else {
+            if (isCollapsedInt[i]++ == 0)
+                _Play(4);
+            if (isCollapsedInt[i] < 30)
+                BackScreen->Blt(&dstRectNew[i], Gunship, &SpriteRectAfter, DDBLT_WAIT | DDBLT_KEYSRC, NULL);
+        }
+
+    }
+
+    //돌의 좌표 참조
 	dstRect.left = 500; 
     dstRect.top = 300;
 	dstRect.right = dstRect.left+30; 
     dstRect.bottom = dstRect.top+30;
 
-	BackScreen->Blt(&dstRect, Gunship, &SpriteRect, DDBLT_WAIT | DDBLT_KEYSRC, NULL);
+	//BackScreen->Blt(&dstRect, Gunship, &SpriteRect, DDBLT_WAIT | DDBLT_KEYSRC, NULL);
 
 
 	if(gFullScreen)
