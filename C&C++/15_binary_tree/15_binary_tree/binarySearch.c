@@ -211,6 +211,76 @@ void levelOrder(struct node* ptr) {
     }
 }
 
+//level order tree traversal
+void levelOrderModified(struct node* ptr) {
+    int level = 0;
+    struct node* temp = new_node(0);
+    int null_test = 0;
+    int enter = 0;
+    int no_child_test = 0;
+    int linetest = 1;
+    struct Queue* queue = createQueue(MAX_QUEUE_SIZE);
+    if (!ptr) return;   // empty tree
+    enqueue(queue, ptr);
+    for (;;) {
+        ptr = dequeue(queue);
+        if (ptr) {
+            printf(" %d ", ptr->data);
+            if (ptr->data == 0) no_child_test++;
+            enter++;
+            if (no_child_test >= linetest)
+                break;
+            if (enter >= linetest)
+            {
+                printf("\n");
+                enter = 0;
+                no_child_test = 0;
+                linetest *= 2;
+            }
+            
+            if (ptr->left_child)
+                enqueue(queue, ptr->left_child);
+            else {
+                enqueue(queue, temp);
+                null_test++;
+            }
+            if (ptr->right_child)
+                enqueue(queue, ptr->right_child);
+            else {
+                enqueue(queue, temp);
+                null_test++;
+            }
+        }
+        else break;
+    }
+}
+
+/*
+                                                                    20
+
+                                    忙式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式忖
+
+                                    5                                                               30
+
+                    忙式式式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式忖                               忙式式式式式式式式式式式式式式式扛式式式式式式式式式式式式式式式忖
+
+                                                    15                              25                              42
+
+                                            忙式式式式式式式扛式式式式式式式忖
+
+                                            12
+                                        忙式式式扛式式式忖
+
+                                        7
+
+
+
+
+
+
+
+
+    */
 
 int main()
 {
@@ -313,6 +383,8 @@ int main()
             /
            7
     */
+    
+
     printf("\n");
 
 
@@ -329,6 +401,7 @@ int main()
     printf("Rear item is %p\n", rear(queue));
 
     levelOrder(root);
-
+    printf("\n");
+    levelOrderModified(root);
     return 0;
 }
