@@ -159,7 +159,7 @@ void enqueue(struct Queue* queue, struct node* item)
         % queue->capacity;
     queue->array[queue->rear] = item;
     queue->size = queue->size + 1;
-    printf("%p enqueued to queue\n", item);
+    //printf("%p enqueued to queue\n", item);
 }
 
 // Function to remove an item from queue. 
@@ -167,7 +167,7 @@ void enqueue(struct Queue* queue, struct node* item)
 struct node* dequeue(struct Queue* queue)
 {
     if (isEmpty(queue))
-        return INT_MIN;
+        return NULL;
     struct node* item = queue->array[queue->front];
     queue->front = (queue->front + 1)
         % queue->capacity;
@@ -195,11 +195,20 @@ struct node* rear(struct Queue* queue)
 
 //level order tree traversal
 void levelOrder(struct node* ptr) {
-    int front = 0;
-    int rear = 0;
-    //queue<int> que1;
-    struct node* queue[MAX_QUEUE_SIZE];
-
+    struct Queue* queue = createQueue(MAX_QUEUE_SIZE);
+    if (!ptr) return;   // empty tree
+    enqueue(queue, ptr);
+    for (;;) {
+        ptr = dequeue(queue);
+        if (ptr) {
+            printf(" %d ", ptr->data);
+            if (ptr->left_child)
+                enqueue(queue, ptr->left_child);
+            if (ptr->right_child)
+                enqueue(queue, ptr->right_child);
+        }
+        else break;
+    }
 }
 
 
@@ -318,6 +327,8 @@ int main()
 
     printf("Front item is %p\n", front(queue));
     printf("Rear item is %p\n", rear(queue));
+
+    levelOrder(root);
 
     return 0;
 }
