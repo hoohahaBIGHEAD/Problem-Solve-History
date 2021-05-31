@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
+#define MAX_QUEUE_SIZE 100
 struct node
 {
     int data; //node will store an integer
@@ -75,6 +78,7 @@ struct node* delete(struct node* root, int x)
         else if (root->left_child == NULL || root->right_child == NULL)
         {
             struct node* temp;
+            // if roots' left child is NULL
             if (root->left_child == NULL)
                 temp = root->right_child;
             else
@@ -86,8 +90,11 @@ struct node* delete(struct node* root, int x)
         //Two Children
         else
         {
+            //오른쪽 서브트리의 가장 작은 노드를 리턴 받고
             struct node* temp = find_minimum(root->right_child);
+            //지우려는 현재 노드에 해당 값을 씌운다.
             root->data = temp->data;
+            //현재 노드의 오른쪽 노드에 오른쪽 서브트리에서 가장 작은 값을 지운 트리로 채운다.
             root->right_child = delete(root->right_child, temp->data);
         }
     }
@@ -103,6 +110,98 @@ void inorder(struct node* root)
         inorder(root->right_child);// visiting right child
     }
 }
+
+////////////////////////////////////////////
+// A structure to represent a queue 
+struct Queue {
+    int front, rear, size;
+    unsigned capacity;
+    int* array;
+};
+
+// function to create a queue 
+// of given capacity. 
+// It initializes size of queue as 0 
+struct Queue* createQueue(unsigned capacity)
+{
+    struct Queue* queue = (struct Queue*)malloc(
+        sizeof(struct Queue));
+    queue->capacity = capacity;
+    queue->front = queue->size = 0;
+
+    // This is important, see the enqueue 
+    queue->rear = capacity - 1;
+    queue->array = (int*)malloc(
+        queue->capacity * sizeof(int));
+    return queue;
+}
+
+// Queue is full when size becomes 
+// equal to the capacity 
+int isFull(struct Queue* queue)
+{
+    return (queue->size == queue->capacity);
+}
+
+// Queue is empty when size is 0 
+int isEmpty(struct Queue* queue)
+{
+    return (queue->size == 0);
+}
+
+// Function to add an item to the queue. 
+// It changes rear and size 
+void enqueue(struct Queue* queue, int item)
+{
+    if (isFull(queue))
+        return;
+    queue->rear = (queue->rear + 1)
+        % queue->capacity;
+    queue->array[queue->rear] = item;
+    queue->size = queue->size + 1;
+    printf("%d enqueued to queue\n", item);
+}
+
+// Function to remove an item from queue. 
+// It changes front and size 
+int dequeue(struct Queue* queue)
+{
+    if (isEmpty(queue))
+        return INT_MIN;
+    int item = queue->array[queue->front];
+    queue->front = (queue->front + 1)
+        % queue->capacity;
+    queue->size = queue->size - 1;
+    return item;
+}
+
+// Function to get front of queue 
+int front(struct Queue* queue)
+{
+    if (isEmpty(queue))
+        return INT_MIN;
+    return queue->array[queue->front];
+}
+
+// Function to get rear of queue 
+int rear(struct Queue* queue)
+{
+    if (isEmpty(queue))
+        return INT_MIN;
+    return queue->array[queue->rear];
+}
+
+
+
+//level order tree traversal
+void levelOrder(struct node* ptr) {
+    int front = 0;
+    int rear = 0;
+    //queue<int> que1;
+    struct node* queue[MAX_QUEUE_SIZE];
+
+}
+
 
 int main()
 {
