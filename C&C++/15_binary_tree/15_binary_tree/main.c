@@ -13,10 +13,12 @@ struct node {
 struct node* newNode(char* key) {
 	// 메모리 할당
 	struct node* node = (struct node*)malloc(sizeof(struct node));
-	//문자열 길이 + 1만큼 메모리 할당(NULL 저장용)
-	char* newKey = malloc(sizeof(char) * (strlen(key)));
+	//문자열 길이 + 1만큼 메모리 할당(문자열 끝 NULL 저장용)
+	char* newKey = malloc(sizeof(char) * (strlen(key)+1));
+	//char* newKey = malloc(sizeof(char) * MAX_STR_SIZE);
 	// 데이터 복사 후 저장
-	strcpy_s(newKey, MAX_STR_SIZE, key);
+	strcpy_s(newKey, (strlen(key) + 1), key);
+	//strcpy_s(newKey, MAX_STR_SIZE, key);
 	node->key = newKey;
 
 	// 포인터 초기화
@@ -33,11 +35,20 @@ struct node* InsertNode(struct node* node, char* key) {
 	if (node == NULL)
 		return newNode(key);
 
+	int ret = strcmp(key, node->key);    // 입력된 문자열 비교
 	//새로 생성할 노드의 알파벳 순서가 지금 방문한 노드보다 앞이라면 방문한 노드의 왼쪽에 삽입한다.
-	if (key < node->key)
-		node->left = InsertNode(node->left, key);
-	else if (key > node->key)
+	switch (ret)
+	{
+	case 0:
+		printf("입력한 문자열이 이미 있습니다.\n");
+		break;
+	case 1:
 		node->right = InsertNode(node->right, key);
+		break;
+	case -1:
+		node->left = InsertNode(node->left, key);
+		break;
+	}
 
 	return node;
 }
