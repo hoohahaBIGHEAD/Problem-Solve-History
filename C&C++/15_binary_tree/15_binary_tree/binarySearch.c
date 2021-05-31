@@ -116,7 +116,7 @@ void inorder(struct node* root)
 struct Queue {
     int front, rear, size;
     unsigned capacity;
-    int* array;
+    struct node** array;
 };
 
 // function to create a queue 
@@ -131,8 +131,8 @@ struct Queue* createQueue(unsigned capacity)
 
     // This is important, see the enqueue 
     queue->rear = capacity - 1;
-    queue->array = (int*)malloc(
-        queue->capacity * sizeof(int));
+    queue->array = (struct node*)malloc(
+        queue->capacity * sizeof(struct node*));
     return queue;
 }
 
@@ -151,7 +151,7 @@ int isEmpty(struct Queue* queue)
 
 // Function to add an item to the queue. 
 // It changes rear and size 
-void enqueue(struct Queue* queue, int item)
+void enqueue(struct Queue* queue, struct node* item)
 {
     if (isFull(queue))
         return;
@@ -159,16 +159,16 @@ void enqueue(struct Queue* queue, int item)
         % queue->capacity;
     queue->array[queue->rear] = item;
     queue->size = queue->size + 1;
-    printf("%d enqueued to queue\n", item);
+    printf("%p enqueued to queue\n", item);
 }
 
 // Function to remove an item from queue. 
 // It changes front and size 
-int dequeue(struct Queue* queue)
+struct node* dequeue(struct Queue* queue)
 {
     if (isEmpty(queue))
         return INT_MIN;
-    int item = queue->array[queue->front];
+    struct node* item = queue->array[queue->front];
     queue->front = (queue->front + 1)
         % queue->capacity;
     queue->size = queue->size - 1;
@@ -176,7 +176,7 @@ int dequeue(struct Queue* queue)
 }
 
 // Function to get front of queue 
-int front(struct Queue* queue)
+struct node* front(struct Queue* queue)
 {
     if (isEmpty(queue))
         return INT_MIN;
@@ -184,7 +184,7 @@ int front(struct Queue* queue)
 }
 
 // Function to get rear of queue 
-int rear(struct Queue* queue)
+struct node* rear(struct Queue* queue)
 {
     if (isEmpty(queue))
         return INT_MIN;
@@ -305,6 +305,19 @@ int main()
            7
     */
     printf("\n");
+
+
+    struct Queue* queue = createQueue(1000);
+
+    enqueue(queue, root);
+    enqueue(queue, root->left_child);
+    enqueue(queue, root->right_child);
+
+    printf("%p dequeued from queue\n\n",
+        dequeue(queue));
+
+    printf("Front item is %p\n", front(queue));
+    printf("Rear item is %p\n", rear(queue));
 
     return 0;
 }
