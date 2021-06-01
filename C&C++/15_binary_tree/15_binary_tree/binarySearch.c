@@ -212,30 +212,53 @@ void levelOrder(struct node* ptr) {
 }
 
 //level order tree traversal
-void levelOrderModified(struct node* ptr) {
-    int level = 0;
+void levelOrderModified(struct node* ptr, int level) {
+    int tab_count = 1;
+    for (size_t i = 0; i < level; i++)
+    {
+        tab_count *= 2;
+    }
+
     struct node* temp = new_node(0);
     int null_test = 0;
-    int enter = 0;
-    int no_child_test = 0;
-    int linetest = 1;
+    int element = 0;
+    int zero_element = 0;
+    int line_element_max = 1;
     struct Queue* queue = createQueue(MAX_QUEUE_SIZE);
     if (!ptr) return;   // empty tree
     enqueue(queue, ptr);
     for (;;) {
         ptr = dequeue(queue);
         if (ptr) {
-            printf(" %d ", ptr->data);
-            if (ptr->data == 0) no_child_test++;
-            enter++;
-            if (no_child_test >= linetest)
+
+            //출력부
+            if(element == 0)
+                for (size_t i = 0; i < (tab_count/2); i++)
+                    printf("\t");
+            else
+                for (size_t i = 0; i < tab_count; i++)
+                    printf("\t");
+
+            if (ptr->data == 0)
+                zero_element++;
+            else
+                printf("%d", ptr->data);
+
+
+            //해당 줄의 element 수를 1 더하라
+            element++;
+            //모든 원소들이 NULL 이라면 멈춰라
+            if (zero_element >= line_element_max)
                 break;
-            if (enter >= linetest)
+            //해당 줄의 element 수가 최대치를 넘는다면
+            if (element >= line_element_max)
             {
-                printf("\n");
-                enter = 0;
-                no_child_test = 0;
-                linetest *= 2;
+                printf("\n\n\n");
+                element = 0;
+                zero_element = 0;
+                //최대치를 2배 해라
+                tab_count /= 2;
+                line_element_max *= 2;
             }
             
             if (ptr->left_child)
@@ -255,7 +278,53 @@ void levelOrderModified(struct node* ptr) {
     }
 }
 
+//level order tree traversal
+int levelCheck(struct node* ptr) {
+    int level = 0;
+    struct node* temp = new_node(0);
+    int null_test = 0;
+    int element = 0;
+    int zero_element = 0;
+    int line_element_max = 1;
+    struct Queue* queue = createQueue(MAX_QUEUE_SIZE);
+    if (!ptr) return;   // empty tree
+    enqueue(queue, ptr);
+    for (;;) {
+        ptr = dequeue(queue);
+        if (ptr) {
+            if (ptr->data == 0)
+                zero_element++;
+            element++;
+            if (zero_element >= line_element_max)
+                return level;
+            if (element >= line_element_max)
+            {
+                level++;
+                element = 0;
+                zero_element = 0;
+                line_element_max *= 2;
+            }
+
+            if (ptr->left_child)
+                enqueue(queue, ptr->left_child);
+            else {
+                enqueue(queue, temp);
+                null_test++;
+            }
+            if (ptr->right_child)
+                enqueue(queue, ptr->right_child);
+            else {
+                enqueue(queue, temp);
+                null_test++;
+            }
+        }
+        else return level;
+    }
+    return level;
+}
+
 /*
+                                                                    
                                                                     20
 
                                     ┌───────────────────────────────┴───────────────────────────────┐
@@ -401,7 +470,10 @@ int main()
     printf("Rear item is %p\n", rear(queue));
 
     levelOrder(root);
-    printf("\n");
-    levelOrderModified(root);
+    
+    int level = 0;
+    level = levelCheck(root);
+    printf("\nlevel : %d\n", level);
+    levelOrderModified(root, level);
     return 0;
 }
