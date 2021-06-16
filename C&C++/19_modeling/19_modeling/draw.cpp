@@ -39,6 +39,21 @@ void circle(vector2D center, float radius)
 	glEnd();
 }
 
+void empty_circle(vector2D center, float radius)
+{
+	float x, y;
+
+	glBegin(GL_LINE_LOOP);
+	// 중심을 기준으로 점을 생성해 점끼리 이어 원을 그린다.
+	for (float f = 0.0; f < 2 * M_PI; f += M_PI / 36.0)
+	{
+		x = center.x + radius * cos(f);
+		y = center.y + radius * sin(f);
+		glVertex2f(x, y);
+	}
+	glEnd();
+}
+
 void ellipse(vector2D a, vector2D b)
 {
 	float x, y;
