@@ -4,8 +4,8 @@
 #include <iostream>
 
 #define M_PI 3.14159265358979323846
-#define radians(x) x*M_PI/180.0
-#define degrees(x) x*180.0/M_PI
+#define radians(x) position_x*M_PI/180.0
+#define degrees(x) position_x*180.0/M_PI
 
 //////////////////////////////////////////////////////////////////////////////
 //

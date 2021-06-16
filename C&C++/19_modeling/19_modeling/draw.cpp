@@ -39,6 +39,21 @@ void circle(vector2D center, float radius)
 	glEnd();
 }
 
+void half_circle(vector2D center, float radius)
+{
+	float x, y;
+
+	glBegin(GL_POLYGON);
+	// 중심을 기준으로 점을 생성해 점끼리 이어 원을 그린다.
+	for (float f = 0.0; f < M_PI; f += M_PI / 36.0)
+	{
+		x = center.x + radius * cos(f);
+		y = center.y + radius * sin(f);
+		glVertex2f(x, y);
+	}
+	glEnd();
+}
+
 void empty_circle(vector2D center, float radius)
 {
 	float x, y;
@@ -90,6 +105,16 @@ void triangle(vector2D a, vector2D b, vector2D c)
 	glVertex2f(a[0], a[1]);
 	glVertex2f(b[0], b[1]);
 	glVertex2f(c[0], c[1]);
+	glEnd();
+}
+
+void rectangle(vector2D a, vector2D b, vector2D c, vector2D d)
+{
+	glBegin(GL_POLYGON);
+	glVertex2f(a[0], a[1]);
+	glVertex2f(b[0], b[1]);
+	glVertex2f(c[0], c[1]);
+	glVertex2f(d[0], d[1]);
 	glEnd();
 }
 
