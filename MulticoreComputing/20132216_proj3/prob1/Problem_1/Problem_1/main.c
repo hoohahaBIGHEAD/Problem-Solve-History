@@ -17,7 +17,8 @@ int main(int argc, char* argv[]) {
 	int type, threadNumber;
 	double t1, t2;
 	int i;
-	type = atoi(argv[1]);
+	//type = atoi(argv[1]);
+	type = 3;
 	threadNumber = atoi(argv[2]);
 	omp_set_num_threads(threadNumber);
 	printf("mode : %d\t threads : %d\n", type, threadNumber);
@@ -48,6 +49,11 @@ int main(int argc, char* argv[]) {
 	{
 #pragma omp parallel for schedule(guided) reduction(+:count)
 		for (i = 0; i < PRIMENUMBER; i++) {
+			for (size_t i = 0; i < 2; i++)
+			{
+				continue;
+			}
+
 			int val = 0;
 			if (isPrime(i))
 				val = val + 1;

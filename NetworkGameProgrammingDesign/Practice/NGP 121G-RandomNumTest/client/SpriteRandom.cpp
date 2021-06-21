@@ -665,9 +665,6 @@ void CALLBACK _GameProc(HWND hWnd, UINT message, UINT wParam, DWORD lParam)
     RECT BackRect = { 0, 0, 640, 480 };
     RECT DispRect = { 0, 0, gWidth, gHeight };
     RECT SpriteRect, dstRect, WinRect;
-    RECT SpriteRectArr[3];
-    int PosXArr[3], PosYArr[3];
-    static BOOLEAN isOn[3] = { false };
 
     //랜덤오브젝트 생성
     static RECT dstRectNew[20];
@@ -680,21 +677,10 @@ void CALLBACK _GameProc(HWND hWnd, UINT message, UINT wParam, DWORD lParam)
 
     RECT SpriteRectBefore, SpriteRectAfter;
 
-    //캐릭터 위치
     SpriteRect.left = Frame * 100;
     SpriteRect.top = 0;
     SpriteRect.right = SpriteRect.left + 100;
     SpriteRect.bottom = 70;
-
-    for (size_t i = 0; i < 3; i++)
-    {
-        SpriteRectArr[i].left = Frame * 100;
-        SpriteRectArr[i].top = 0;
-        SpriteRectArr[i].right = SpriteRectArr[i].left + 100;
-        SpriteRectArr[i].bottom = 70;
-    }
-
-
 
     if (Click) {
         //프레임을 1 더해라. 그게 4보다 크면 다시 0으로 바꿔라
