@@ -1,0 +1,685 @@
+<p data-ke-size="size16"><b>이 글은 제 블로그에 있는 [캐릭터 검색기] 사용법을 알려드립니다.</b></p>
+<p data-ke-size="size16">&nbsp;</p>
+<p data-ke-size="size16">기본적으로 <b>[캐릭터 검색기]</b>는</p>
+<ul style="list-style-type: disc;" data-ke-list-type="disc">
+    <li><b>캐릭터 검색</b></li>
+    <li><b>등장한 캐릭터 목록</b></li>
+    <li><b>숨길 열 선택</b></li>
+</ul>
+<p data-ke-size="size16">이렇게 세 가지로 간단하게 구성되어 있습니다. 자세한 설명은 아래에 적어두었습니다. 굉장히 간단해서 몇 번 만져보시면 금방 이해하실 수 있습니다.</p>
+<p data-ke-size="size16">&nbsp;</p>
+<p data-ke-size="size16">바로 아래는 검색기 데모입니다. 사용법을 보시면서 바로 적용해보실 수 있습니다.</p>
+<p data-ke-size="size16">&nbsp;</p>
+<p data-ke-size="size16">&nbsp;</p>
+<p data-ke-size="size16">&nbsp;</p>
+
+<p data-ke-size="size16"><b>등장한 캐릭터 목록</b></p>
+<div data-ke-type="moreLess" data-text-more="더보기" data-text-less="닫기"><a class="btn-toggle-moreless">더보기</a>
+    <div class="moreless-content">
+        <p data-ke-size="size16">라크&nbsp;레크레이셔 <br />라헬 <br />레로&nbsp;로 <br />밤 <br />십이수 <br />아낙&nbsp;자하드 <br />악령 <br />에반&nbsp;에드록 <br />엔도르시&nbsp;자하드 <br />여고생 <br />여미생 <br />유리&nbsp;자하드 <br />유한성 <br />자왕난 <br />쿠르단 <br />쿤&nbsp;마스체니&nbsp;자하드 <br />쿤&nbsp;아게로&nbsp;아그니스 <br />쿤&nbsp;하츨링 <br />퀀트 <br />폰세칼&nbsp;라우뢰 <br />하츠 <br />헤돈 <br />호량 <br />화련</p>
+    </div>
+</div>
+
+<!-- 여기 복사 붙여넣기-->
+<p data-ke-size="size16">&nbsp;</p>
+<div id="checkbox_div">
+    <p><b>숨길 열 선택</b></p>
+    <ul>
+        <li><input type="checkbox" value="show" id="character" onchange="hide_show_table(this.id);" checked="checked">등장인물</li>
+        <li><input type="checkbox" value="hide" id="rating_type" onchange="hide_show_table(this.id);">별점</li>
+        <li><input type="checkbox" value="hide" id="num" onchange="hide_show_table(this.id);">등록일</li>
+    </ul>
+</div>
+
+
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="캐릭터 이름 검색(ex. 유리)" size="30">
+<div style="width:100%; height:600px; overflow:auto">
+    <table id="myTable" cellpadding="0" cellspacing="0" class="viewList">
+
+        <thead>
+        <tr>
+            <th scope="col" align="left" width="80">이미지</th>
+            <th scope="col" align="left" width="80">제목</th>
+            <th id="character_head" scope="col" align="left" width="*" style="display:none;">등장인물</th>
+            <th id="rating_type_head" scope="col" align="left" width="141">별점</th>
+            <th id="num_head" scope="col" align="left" width="76">등록일</th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+        <!--여기에 내용 넣기-->
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=20&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','20')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/20/inst_thumbnail_20101105184812.jpg"
+                         title="19화" alt="19화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=20&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','20')">19화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/라크 레크레이셔/아낙 자하드/하츠/십이수/레로 로/
+            </td>
+
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.62%">평점</em></span>
+                    <strong>9.96</strong>
+                </div>
+            </td>
+            <td class="num">2010.11.08</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=19&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','19')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/19/inst_thumbnail_20101029182805.jpg"
+                         title="18화" alt="18화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=19&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','19')">18화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/라크 레크레이셔/아낙 자하드/하츠/십이수/폰 세칼 라우뢰/레로 로/
+            </td>
+
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.62%">평점</em></span>
+                    <strong>9.96</strong>
+                </div>
+            </td>
+            <td class="num">2010.11.01</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=18&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','18')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/18/inst_thumbnail_20101022185631.jpg"
+                         title="17화" alt="17화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=18&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','18')">17화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/아낙 자하드/하츠/십이수/폰 세칼 라우뢰/
+            </td>
+
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.63%">평점</em></span>
+                    <strong>9.96</strong>
+                </div>
+            </td>
+            <td class="num">2010.10.25</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=17&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','17')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/17/inst_thumbnail_20101015183738.jpg"
+                         title="16화" alt="16화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=17&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','17')">16화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/아낙 자하드/하츠/십이수/폰 세칼 라우뢰/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.61%">평점</em></span>
+                    <strong>9.96</strong>
+                </div>
+            </td>
+            <td class="num">2010.10.18</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=16&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','16')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/16/inst_thumbnail_20101008184134.jpg"
+                         title="15화" alt="15화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=16&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','16')">15화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/라크 레크레이셔/아낙 자하드/하츠/십이수/엔도르시 자하드/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.63%">평점</em></span>
+                    <strong>9.96</strong>
+                </div>
+            </td>
+            <td class="num">2010.10.11</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=15&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','15')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/15/inst_thumbnail_20101001175451.jpg"
+                         title="14화" alt="14화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=15&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','15')">14화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/라크 레크레이셔/유한성/아낙 자하드/하츠/십이수/폰 세칼 라우뢰/화련/라헬/엔도르시 자하드/악령/퀀트/레로 로/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.62%">평점</em></span>
+                    <strong>9.96</strong>
+                </div>
+            </td>
+            <td class="num">2010.10.04</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=14&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','14')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/14/inst_thumbnail_20100924185535.jpg"
+                         title="13화" alt="13화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=14&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','14')">13화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/라크 레크레이셔/유한성/아낙 자하드/하츠/십이수/폰 세칼 라우뢰/라헬/엔도르시 자하드/악령/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.61%">평점</em></span>
+                    <strong>9.96</strong>
+                </div>
+            </td>
+            <td class="num">2010.09.27</td>
+        </tr>
+
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=13&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','13')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/13/inst_thumbnail_20100917195551.jpg"
+                         title="12화" alt="12화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=13&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','13')">12화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/라크 레크레이셔/유한성/유리 자하드/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.62%">평점</em></span>
+                    <strong>9.96</strong>
+                </div>
+            </td>
+            <td class="num">2010.09.20</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=12&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','12')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/12/inst_thumbnail_20100910173508.jpg"
+                         title="11화" alt="11화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=12&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','12')">11화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/라크 레크레이셔/유한성/아낙 자하드/하츠/십이수/폰 세칼 라우뢰/레로 로/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.62%">평점</em></span>
+                    <strong>9.96</strong>
+                </div>
+            </td>
+            <td class="num">2010.09.13</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=11&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','11')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/11/inst_thumbnail_20100906000520.jpg"
+                         title="10화" alt="10화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=11&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','11')">10화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/아낙 자하드/하츠/십이수/폰 세칼 라우뢰/레로 로/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.61%">평점</em></span>
+                    <strong>9.96</strong>
+                </div>
+            </td>
+            <td class="num">2010.09.06</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=10&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','10')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/10/inst_thumbnail_20100829023726.jpg"
+                         title="9화" alt="9화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=10&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','10')">9화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/라크 레크레이셔/아낙 자하드/하츠/십이수/폰 세칼 라우뢰/레로 로/유리 자하드/에반 에드록/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.60%">평점</em></span>
+                    <strong>9.96</strong>
+                </div>
+            </td>
+            <td class="num">2010.08.30</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=9&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','9')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/9/inst_thumbnail_20100820173144.jpg"
+                         title="8화" alt="8화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=9&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','9')">8화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/라크 레크레이셔/아낙 자하드/하츠/십이수/폰 세칼 라우뢰/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.59%">평점</em></span>
+                    <strong>9.96</strong>
+                </div>
+            </td>
+            <td class="num">2010.08.23</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=8&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','8')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/8/inst_thumbnail_20100813185507.jpg"
+                         title="7화" alt="7화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=8&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','8')">7화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/라크 레크레이셔/아낙 자하드/하츠/십이수/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.59%">평점</em></span>
+                    <strong>9.96</strong>
+                </div>
+            </td>
+            <td class="num">2010.08.16</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=7&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','7')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/7/inst_thumbnail_20100806195029.jpg"
+                         title="6화" alt="6화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=7&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','7')">6화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/라크 레크레이셔/아낙 자하드/하츠/폰 세칼 라우뢰/유리 자하드/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.57%">평점</em></span>
+                    <strong>9.96</strong>
+                </div>
+            </td>
+            <td class="num">2010.08.09</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=6&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','6')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/6/inst_thumbnail_20100730183905.jpg"
+                         title="5화" alt="5화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=6&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','6')">5화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/라헬/헤돈/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.57%">평점</em></span>
+                    <strong>9.96</strong>
+                </div>
+            </td>
+            <td class="num">2010.08.02</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=5&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','5')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/5/inst_thumbnail_20100726114404.jpg"
+                         title="4화" alt="4화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=5&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','5')">4화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/라크 레크레이셔/헤돈/유리 자하드/에반 에드록/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.53%">평점</em></span>
+                    <strong>9.95</strong>
+                </div>
+            </td>
+            <td class="num">2010.07.26</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=4&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','4')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/4/inst_thumbnail_20100719122044.jpg"
+                         title="3화" alt="3화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=4&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','4')">3화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/헤돈/유리 자하드/에반 에드록/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.46%">평점</em></span>
+                    <strong>9.95</strong>
+                </div>
+            </td>
+            <td class="num">2010.07.19</td>
+        </tr>
+
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=3&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','3')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/3/inst_thumbnail_20100709191720.jpg"
+                         title="2화" alt="2화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=3&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','3')">2화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/헤돈/유리 자하드/에반 에드록/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.31%">평점</em></span>
+                    <strong>9.93</strong>
+                </div>
+            </td>
+            <td class="num">2010.07.12</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=2&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','2')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/2/inst_thumbnail_20100702181825.jpg"
+                         title="1화" alt="1화" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=2&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','2')">1화</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/라크 레크레이셔/아낙 자하드/하츠/헤돈/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:99.10%">평점</em></span>
+                    <strong>9.91</strong>
+                </div>
+            </td>
+            <td class="num">2010.07.05</td>
+        </tr>
+        <tr>
+            <td>
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=1&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.img','183559','1')">
+                    <img src="https://shared-comic.pstatic.net/thumb/webtoon/183559/1/inst_thumbnail_20100630151359.jpg"
+                         title="예고편" alt="예고편" width="71" height="41"
+                         onerror="this.src='https://ssl.pstatic.net/static/comic/images/migration/common/non71_41.gif'">
+                    <span class="mask"></span>
+                </a>
+            </td>
+            <td class="title">
+                <a target='_blank'
+                   href="https://comic.naver.com/webtoon/detail.nhn?titleId=183559&amp;no=1&amp;weekday=mon"
+                   onclick="nclk_v2(event,'lst.title','183559','1')">예고편</a>
+            </td>
+            <td class="character" style="display:none;">
+                밤/쿤 아게로 아그니스/라크 레크레이셔/아낙 자하드/하츠/헤돈/
+            </td>
+            <td>
+                <div class="rating_type">
+                    <span class="star"><em style="width:98.79%">평점</em></span>
+                    <strong>9.88</strong>
+                </div>
+            </td>
+            <td class="num">2010.06.30</td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+
+
+<script>
+function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    //여기서 컬럼값을 찾는다.
+    td = tr[i].getElementsByTagName("td")[2];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+</script>
+
+<script type="text/javascript">
+function hide_show_table(col_name)
+{
+ var checkbox_val=document.getElementById(col_name).value;
+ if(checkbox_val=="hide")
+ {
+  var all_col=document.getElementsByClassName(col_name);
+  for(var i=0;i<all_col.length;i++)
+  {
+   all_col[i].style.display="none";
+  }
+  document.getElementById(col_name+"_head").style.display="none";
+  document.getElementById(col_name).value="show";
+ }
+
+ else
+ {
+  var all_col=document.getElementsByClassName(col_name);
+  for(var i=0;i<all_col.length;i++)
+  {
+   all_col[i].style.display="table-cell";
+  }
+  document.getElementById(col_name+"_head").style.display="table-cell";
+  document.getElementById(col_name).value="hide";
+ }
+}
+
+</script>
+
+<!-- 여기 복사 붙여넣기--><p data-ke-size="size16">&nbsp;</p>
+<p data-ke-size="size16">&nbsp;</p>
+<h4 data-ke-size="size20"><b>캐릭터 검색</b></h4>
+<p data-ke-size="size16">찾고자 하는 캐릭터를 검색하면 해당 캐릭터가 나오는 편만 보여줍니다. 이를 통해 자주 등장하지 않는 조연들을 쉽게 찾으실 수 있습니다.</p>
+<p data-ke-size="size16">&nbsp;</p>
+<p data-ke-size="size18"><b>검색 전</b></p>
+<p>[##_Image|kage@bfMvx7/btq8L7dX1qr/N1maiuamkNw1dmU3VdPgV1/img.png|alignCenter|data-origin-width="877" data-origin-height="342" data-ke-mobilestyle="widthOrigin"|||_##]</p>
+<p data-ke-size="size18"><b>검색 후(ex. 유리)</b></p>
+<p>[##_Image|kage@bAiRt1/btq8KRPXF7v/LK79oVbjpKwky0skGQAp5K/img.png|alignCenter|data-origin-width="879" data-origin-height="442" data-ke-mobilestyle="widthOrigin"|||_##]</p>
+<h4 data-ke-size="size20">&nbsp;</h4>
+<h4 data-ke-size="size20"><b>등장한 캐릭터 목록</b></h4>
+<p data-ke-size="size16">해당 편에 등장한 캐릭터들의 목록입니다. <b>더보기</b>를 누르시면 해당 정리본에 등장한 캐릭터들을 모두 보실 수 있습니다. <b>ㄱ~ㅎ</b> 순으로 정렬되어 있으며 목록에 없는 캐릭터는 해당 정리본에서는 등장하지 않습니다.</p>
+<p>[##_Image|kage@vpICu/btq8Nczg4iK/26qHNn9el2kWpw7ztqxFeK/img.png|alignCenter|data-origin-width="197" data-origin-height="94" data-ke-mobilestyle="widthOrigin"|||_##][##_Image|kage@bOPyoJ/btq8KSgXzpL/k65LM4XxascxDIWRTB6zq1/img.png|alignCenter|data-origin-width="134" data-origin-height="626" data-ke-mobilestyle="widthOrigin"|||_##]</p>
+<p data-ke-size="size16">&nbsp;</p>
+<h4 data-ke-size="size20"><b>숨길 열 선택</b></h4>
+<p data-ke-size="size16">숨길 열을 선택하실 수 있습니다.&nbsp;모바일 환경을 배려하여 기본적으로 등장인물은 숨겨지게 해두었습니다.</p>
+<p data-ke-size="size16">아래는 기본 레이아웃입니다.</p>
+<p>[##_Image|kage@mWO8J/btq8MGlW2Dn/EHxYrtMs4PTARKzodPEND1/img.png|alignCenter|data-origin-width="891" data-origin-height="304" data-ke-mobilestyle="widthOrigin"|||_##]</p>
+<p data-ke-size="size16">&nbsp;</p>
+<p data-ke-size="size16">아래는 별점과 등장인물을 숨겼을 때 나오는 레이아웃입니다.</p>
+<p>[##_Image|kage@ARIRs/btq8QzGY2jw/V0JzhiM4Hexkuqti5sBRq0/img.png|alignCenter|data-origin-width="883" data-origin-height="301" data-ke-mobilestyle="widthOrigin"|||_##]</p>
+<p data-ke-size="size16">&nbsp;</p>
+<p data-ke-size="size16">이렇게 캐릭터 검색기 사용법을 알려드렸습니다. 검색기가 업데이트되면 사용법도 그에 맞게 업데이트할 예정입니다. 궁금하신 점 있으시면 댓글 남겨주세요. 읽어주셔서 감사합니다!</p>
+<p data-ke-size="size16">&nbsp;</p>
+<p data-ke-size="size16">&nbsp;</p>
+<p data-ke-size="size18"><b>신의탑 더보기</b></p>
+<p data-ke-size="size16"><a href="https://hoohaha.tistory.com/48" target="_blank" rel="noopener">신의탑 1부(1화~77화)</a></p>
+<p data-ke-size="size16"><a href="https://hoohaha.tistory.com/52" target="_blank" rel="noopener">신의탑 2부(프롤로그~50화)</a></p>

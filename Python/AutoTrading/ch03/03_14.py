@@ -5,6 +5,8 @@ from PyQt5 import uic
 from PyQt5.QtCore import *
 import pyupbit
 
+access_key = ""
+secret_key = ""
 
 # 계좌 및 주문 연결, 잔고 조회
 upbit = pyupbit.Upbit(access_key, secret_key)
